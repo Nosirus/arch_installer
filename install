@@ -544,7 +544,7 @@ install() { # {{{
 		echo "   12. $(mainmenu_item "${checklist[11]}" 'Finish')"
 		echo
 
-		read -p "Enter option (1-13): " OPTION
+		read -p "Enter option (1-12): " OPTION
 
 		case "$OPTION" in
 			1)
