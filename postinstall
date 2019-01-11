@@ -377,11 +377,31 @@ install_fonts() { # {{{
 	enter_to_continue
 }
 # }}}
-install_theme() { # {{{
-	print_progress 'Install theme and icon for desktop environment'
-	# install_package 'arc-gtk-theme'
-	install_package 'breeze breeze-gtk'
-	install_package 'papirus-icon-theme'
+#install_theme() { # {{{
+#	print_progress 'Install theme and icon for desktop environment'
+#	# install_package 'arc-gtk-theme'
+#	install_package 'breeze breeze-gtk'
+#	install_package 'papirus-icon-theme'
+#}
+# }}}
+
+setup_zsh() { # {{
+        print_title 'ZSH'
+        print_info 'It will set up zsh with powerlevel9k theme'
+        install_package 'zsh powerline-fonts'
+	read -p 'USER: ' USER
+	git clone https://github.com/bhilburn/powerlevel9k.git /home/$USER/powerlevel9k
+	chsh "$USER" --shell /bin/zsh
+	
+	
+	enter_to_continue
+}
+# }}}
+
+ending_script() { # {{
+		ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+
+	enter_to_continue
 }
 # }}}
 
@@ -390,7 +410,6 @@ finish() { # {{{
 
 	confirm_yes 'Reboot system'
 	if [[ "$OPTION" != n ]]; then
-		ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 		reboot
 	fi
 	exit 0
@@ -411,7 +430,9 @@ install() { # {{{
 		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install base')"
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
-		echo "    8. $(mainmenu_item "${checklist[7]}"  'Finish')"
+		echo "	 8. $(mainmenu_item "${checklist[7]}"  'Setup of Zsh with powerlevel9k')"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Ending script')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Finish')"
 		echo
 
 		read -p "Enter option (1-8): " OPTION
