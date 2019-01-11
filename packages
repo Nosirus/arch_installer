@@ -27,11 +27,15 @@ ntfs-3g # read/write Window files from linux
 # development tool
 
 
+# text editor
+libreoffice-fresh
+libreoffice-fresh-fr
+
 # telex
 
 
-# virtualbox
-
+# KVM manager
+virt-manager
 
 # script/CLI tools
 
@@ -41,5 +45,13 @@ ntfs-3g # read/write Window files from linux
 openssh 
 gparted
 filelight #View disk usage information
+virt-manager
+gwenview
+kdenetwork-filesharing
+ffmpegthumbs
+snapraid #aur
+mergerfs #aur
+qmplay2 #aur
+looking-glass #aur
 
 # vim ft=conf
