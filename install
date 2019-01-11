@@ -165,12 +165,12 @@ format_partitions() { # {{{
 	print_partition_info
 	echo
 
-	echo "${BLUE}${ROOT_PARTITION}${RESET} ${RED}(ext4)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}${RESET}"
+	echo "${BLUE}${ROOT_PARTITION}${RESET} ${RED}(btrfs)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}${RESET}"
 
 	if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
-		echo "${BLUE}${HOME_PARTITION}${RESET} ${RED}(ext4)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}/home${RESET}"
+		echo "${BLUE}${HOME_PARTITION}${RESET} ${RED}(xfs)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}/home${RESET}"
 	else
-		echo "${BLUE}${HOME_PARTITION}${RESET} ${RED}(ext4)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/home${RESET}"
+		echo "${BLUE}${HOME_PARTITION}${RESET} ${RED}(xfs)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/home${RESET}"
 	fi
 
 	echo "${BLUE}${SWAP_PARTITION}${RESET} ${RED}(swap)${RESET} will be formatted"
