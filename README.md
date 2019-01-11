@@ -40,7 +40,7 @@ check all cases
 wifi-menu # if you use wifi
 
 pacman -Sy git
-git clone https://github.com/NearHuscarl/arch_installer
+git clone https://github.com/Nosirus/arch_installer
 cd arch_installer
 ./install
 ```
@@ -48,7 +48,7 @@ cd arch_installer
 Without git
 
 ```bash
-curl -L https://github.com/NearHuscarl/arch_installer/archive/master.tar.gz > arch_installer.tar.gz
+curl -L https://github.com/Nosirus/arch_installer/archive/master.tar.gz > arch_installer.tar.gz
 tar -xvf arch_installer.tar.gz
 cd arch_installer-master
 ./install
