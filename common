@@ -7,7 +7,7 @@ NETWORK_DEVICE=''
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 # EDITOR {{{
-EDITOR='vim'
+EDITOR='nano'
 # }}}
 # MIRRORLIST {{{
 MIRRORLIST='sort by download speed'
@@ -26,23 +26,23 @@ FORMAT_HOME_PARTITION=0
 MOUNTPOINT='/mnt'
 # }}}
 # LOCALE {{{
-LOCALE='en_US'
+LOCALE='fr_FR'
 # }}}
 # TIMEZONE {{{
-ZONE='Asia'
-SUBZONE='Ho_Chi_Minh'
+ZONE='Europe'
+SUBZONE='Paris'
 # }}}
 # HARDWARE CLOCK {{{
 HARDWARE_CLOCK='UTC'
 # }}}
 # KEYMAP {{{
-KEYMAP='us'
+KEYMAP='fr'
 # }}}
 # HOSTNAME {{{
-HOSTNAME='nearPC'
+HOSTNAME='nosirusPC'
 # }}}
 # USERNAME {{{
-USERNAME=''
+USERNAME='nosirus'
 # }}}
 # DESKTOP ENVIRONMENT {{{
 DESKTOP_ENVIRONMENT='KDE'
