@@ -11,9 +11,9 @@
 networkmanager
 
 # browser
-chromium
 firefox
-tor-browser # AUR
+firefox-i18n-fr
+hunspell-fr
 
 # bluetooth
 bluez bluez-utils pulseaudio-bluetooth
@@ -25,41 +25,21 @@ pulseaudio pulseaudio-alsa
 ntfs-3g # read/write Window files from linux
 
 # development tool
-neovim
-python-pip
-npm
-rust # vim-markdown-composer
 
-mongodb
-heroku-cli # AUR
-postman-bin # AUR
-robo3t-bin # AUR
-
-intellij-idea-ce
-jdk8-openjdk
-
-pycharm-community-edition
 
 # telex
-ibus-unikey
+
 
 # virtualbox
-virtualbox virtualbox-host-dkms virtualbox-guest-utils virtualbox-guest-dkms linux-headers
+
 
 # script/CLI tools
-reflector
-bash-completion
-ripgrep fd
-mlocate
-trash-cli
-xclip
-fzf
-lastpass-cli
-pacman-contrib
+
 
 # other
-vlc redshift openssh gparted qalculate-gtk filelight
-
-teamviewer # AUR
+#redshift #Adjusts the color temperature of your screen according to your surroundings.
+openssh 
+gparted
+filelight #View disk usage information
 
 # vim ft=conf
