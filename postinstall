@@ -386,9 +386,10 @@ install_fonts() { # {{{
 # }}}
 
 ending_script() { # {{
-		print_progress 'Install user scripts'
-		chsh "$USER" --shell /bin/zsh
-		ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+	print_progress 'Install user scripts'
+		
+	chsh "$USER" --shell /bin/zsh
+	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 
 	enter_to_continue
 }
@@ -454,9 +455,13 @@ install() { # {{{
 				install_fonts
 				checklist[6]=1
 				;;
-			8)
-				finish
+			8)	
+				ending_script
 				checklist[7]=1
+				;;
+			9)
+				finish
+				checklist[8]=1
 				;;
 			*)
 				invalid_option
