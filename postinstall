@@ -386,7 +386,7 @@ install_fonts() { # {{{
 # }}}
 
 install_translation() { # {{{
-        print_title 'TRANSLATION'
+   print_title 'TRANSLATION'
 	print_info 'type fr for french translation'
 	read -p 'Translation: ' TRANSLATION
 	install_package libreoffice-fresh-"$TRANSLATION"
