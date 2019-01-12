@@ -402,6 +402,9 @@ ending_script() { # {{
 		
 	chsh "$USER" --shell /bin/zsh
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+	git clone https://github.com/jsalatas/plasma-pstate
+	cd plasma-pstate
+	sudo ./install.sh
 
 	enter_to_continue
 }
