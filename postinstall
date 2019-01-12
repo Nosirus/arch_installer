@@ -385,6 +385,18 @@ install_fonts() { # {{{
 #}
 # }}}
 
+install_translation() { # {{{
+        print_title 'TRANSLATION'
+	print_info 'type fr for french translation'
+	read -p 'Translation: ' TRANSLATION
+	install_package libreoffice-fresh-"$TRANSLATION"
+	install_package firefox-i18n-"$TRANSLATION"
+	install_package hunspell-"$TRANSLATION"
+
+	enter_to_continue
+}
+# }}}
+
 ending_script() { # {{
 	print_progress 'Install user scripts'
 		
@@ -420,8 +432,9 @@ install() { # {{{
 		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install base')"
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
-		echo "    8. $(mainmenu_item "${checklist[7]}"  'Ending script')"
-		echo "    9. $(mainmenu_item "${checklist[8]}"  'Finish')"
+		echo "    8. $(mainmenu_item "${checklist[6]}"  'Install translation')"
+		echo "    9. $(mainmenu_item "${checklist[7]}"  'Ending script')"
+		echo "   10. $(mainmenu_item "${checklist[8]}"  'Finish')"
 		echo
 
 		read -p "Enter option (1-10): " OPTION
@@ -456,12 +469,16 @@ install() { # {{{
 				checklist[6]=1
 				;;
 			8)	
-				ending_script
+				install_translation
 				checklist[7]=1
 				;;
-			9)
-				finish
+			9)	
+				ending_script
 				checklist[8]=1
+				;;
+			10)
+				finish
+				checklist[9]=1
 				;;
 			*)
 				invalid_option
