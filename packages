@@ -50,6 +50,8 @@ yakuake
 zsh
 zsh-theme-powerlevel9k
 mkvtoolnix-gui
+
+# AUR Packages
 filebot #aur
 snapraid #aur
 mergerfs #aur
