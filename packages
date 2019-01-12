@@ -11,9 +11,7 @@
 networkmanager
 
 # browser
-firefox
-firefox-i18n-fr
-hunspell-fr
+firefox firefox-i18n-fr hunspell-fr
 
 # bluetooth
 bluez bluez-utils pulseaudio-bluetooth
@@ -28,8 +26,7 @@ ntfs-3g # read/write Window files from linux
 
 
 # text editor
-libreoffice-fresh
-libreoffice-fresh-fr
+libreoffice-fresh libreoffice-fresh-fr
 
 # telex
 
