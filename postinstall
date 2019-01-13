@@ -404,17 +404,16 @@ ending_script() { # {{
 		
 	chsh "$USER" --shell /bin/zsh
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+
+	systemctl enable org.cups.cupsd.service
+	sudo systemctl enable bluetooth.service
+	
 	git clone https://gitlab.com/jnuutinen/minimal-menu
 	cd minimal-menu
 	sudo mkdir build
 	cd build
 	sudo cmake ..
 	sudo make install
-	
-	systemctl enable org.cups.cupsd.service
-	sudo systemctl enable bluetooth.service
-	
-	flatpak install com.discordapp.Discord
 
 	enter_to_continue
 }
@@ -445,9 +444,9 @@ install() { # {{{
 		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install base')"
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
-		echo "    8. $(mainmenu_item "${checklist[6]}"  'Install translation')"
-		echo "    9. $(mainmenu_item "${checklist[7]}"  'Ending script')"
-		echo "   10. $(mainmenu_item "${checklist[8]}"  'Finish')"
+		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Ending script')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Finish')"
 		echo
 
 		read -p "Enter option (1-10): " OPTION
