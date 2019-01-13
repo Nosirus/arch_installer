@@ -57,12 +57,13 @@ mkvtoolnix-gui
 conky conky-manager
 
 # AUR Packages
-filebot-git #aur
-snapraid #aur
-mergerfs #aur
-qmplay2 #aur
-looking-glass #aur
-octopi #aur
-plasma5-applets-plasma-pstate #aur
+filebot-git
+snapraid
+mergerfs
+qmplay2
+looking-glass
+octopi
+plasma5-applets-plasma-pstate
+amar-installer
 
 # vim ft=conf
