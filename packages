@@ -66,5 +66,6 @@ looking-glass
 octopi
 plasma5-applets-plasma-pstate
 amar-installer
+ctop
 
 # vim ft=conf
