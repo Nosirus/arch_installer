@@ -30,7 +30,9 @@ krita
 # text editor
 libreoffice-fresh
 
-# telex
+# terminal
+neofetch
+zsh powerline-fonts zsh-theme-powerlevel9k
 
 
 # KVM manager
@@ -49,7 +51,6 @@ gwenview
 kdenetwork-filesharing
 ffmpegthumbs
 yakuake
-zsh powerline-fonts zsh-theme-powerlevel9k
 mkvtoolnix-gui
 
 # AUR Packages
