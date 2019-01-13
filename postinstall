@@ -280,6 +280,9 @@ install_display_manager() { # {{{
 # }}}
 
 install_base() { # {{{
+
+	#474E22316ABF4785A88C6E8EA2C794A986419D8A #libc++abi key
+
 	local arch_packages npm_packages pip_packages
 
 	arch_packages="$(read_packages "$PROJECT_ROOT/packages")"
