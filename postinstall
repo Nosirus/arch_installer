@@ -402,6 +402,12 @@ ending_script() { # {{
 		
 	chsh "$USER" --shell /bin/zsh
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+	git clone https://gitlab.com/jnuutinen/minimal-menu
+	cd minimal-menu
+	sudo mkdir build
+	cd build
+	sudo cmake ..
+	sudo make install
 
 	enter_to_continue
 }
