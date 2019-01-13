@@ -404,13 +404,14 @@ ending_script() { # {{
 		
 	chsh "$USER" --shell /bin/zsh
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
-
-	systemctl enable org.cups.cupsd.service
-	sudo systemctl enable bluetooth.service
 	
 	install_package 'discord'
 	
-	usermod -aG docker $USER
+	usermod -aG docker $USERNAME
+	
+	systemctl enable org.cups.cupsd.service
+	systemctl enable bluetooth.service
+	systemctl enable docker
 	
 	git clone https://gitlab.com/jnuutinen/minimal-menu
 	cd minimal-menu
