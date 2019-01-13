@@ -410,6 +410,8 @@ ending_script() { # {{
 	
 	install_package 'discord'
 	
+	usermod -aG docker $USER
+	
 	git clone https://gitlab.com/jnuutinen/minimal-menu
 	cd minimal-menu
 	sudo mkdir build
