@@ -232,12 +232,14 @@ install_desktop_environment() { # {{{
 			install_package 'ktorrent' # torrent app for KDE
 			install_package 'sddm-kcm' # sddm config gui for KDE
 			install_package 'arc-kde' # arc theme for KDE
-			install_package 'breeze-kde4' # breeze theme for KDE
+			install_package 'breeze' # breeze theme for KDE
 			install_package 'latte-dock' # dock for KDE
 			install_package 'okular' # pdf reader for KDE
 			install_package 'kcalc' # calculator
 			install_package 'kde-gtk-config' # configure gtk in KDE
-			install_package 'kscreen' # KDE screen management software 
+			install_package 'kscreen' # KDE screen management software
+			install_package 'plasma-browser-integration'
+			install_package 'kdenetwork-filesharing' # KDE Samba share
 			setup_xinitrc 'startkde'
 			;;
 		XFCE)
