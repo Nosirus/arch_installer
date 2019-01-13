@@ -40,7 +40,7 @@ virt-manager
 
 # script/CLI tools
 
-# Japanese characters to show properly in Firefox on Arch?
+# Japanese characters to show properly in Firefox
 noto-fonts-cjk noto-fonts-emoji noto-fonts
 
 
