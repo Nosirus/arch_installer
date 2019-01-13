@@ -63,5 +63,6 @@ octopi #aur
 discord #aur
 kwin-scripts-quarter-tiling-git #aur
 plasma5-applets-plasma-pstate #aur
+nerd-fonts-complete #aur
 
 # vim ft=conf
