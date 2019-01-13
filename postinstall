@@ -408,6 +408,11 @@ ending_script() { # {{
 	cd build
 	sudo cmake ..
 	sudo make install
+	
+	systemctl enable org.cups.cupsd.service
+	sudo systemctl enable bluetooth.service
+	
+	flatpak install com.discordapp.Discord
 
 	enter_to_continue
 }
