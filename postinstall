@@ -408,6 +408,8 @@ ending_script() { # {{
 	systemctl enable org.cups.cupsd.service
 	sudo systemctl enable bluetooth.service
 	
+	install_package 'discord'
+	
 	git clone https://gitlab.com/jnuutinen/minimal-menu
 	cd minimal-menu
 	sudo mkdir build
