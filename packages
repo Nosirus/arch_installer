@@ -52,6 +52,7 @@ kdenetwork-filesharing
 ffmpegthumbs
 yakuake
 mkvtoolnix-gui
+conky conky-manager
 
 # AUR Packages
 filebot #aur
@@ -63,6 +64,5 @@ octopi #aur
 discord #aur
 kwin-scripts-quarter-tiling-git #aur
 plasma5-applets-plasma-pstate #aur
-nerd-fonts-complete #aur
 
 # vim ft=conf
