@@ -53,6 +53,7 @@ ffmpegthumbs
 yakuake
 mkvtoolnix-gui
 conky conky-manager
+flatpak
 
 # AUR Packages
 filebot #aur
@@ -61,7 +62,6 @@ mergerfs #aur
 qmplay2 #aur
 looking-glass #aur
 octopi #aur
-discord #aur
 plasma5-applets-plasma-pstate #aur
 
 # vim ft=conf
