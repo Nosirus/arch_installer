@@ -58,7 +58,7 @@ conky conky-manager
 flatpak
 
 # AUR Packages
-filebot #aur
+filebot-git #aur
 snapraid #aur
 mergerfs #aur
 qmplay2 #aur
