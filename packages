@@ -55,6 +55,7 @@ ffmpegthumbs
 yakuake
 mkvtoolnix-gui
 conky conky-manager
+docker
 
 # AUR Packages
 filebot-git
