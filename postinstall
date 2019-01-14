@@ -412,7 +412,10 @@ ending_script() { # {{
 	
 	#install_package 'discord'
 	
-	#usermod -aG docker $USERNAME
+	usermod -aG docker $USERNAME
+	
+	adduser $USERNAME libvirtd
+	useradd libvirtd nosirus
 	
 	systemctl enable org.cups.cupsd.service
 	systemctl enable bluetooth.service
