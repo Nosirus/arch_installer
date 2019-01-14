@@ -407,7 +407,7 @@ install_translation() { # {{{
 ending_script() { # {{
 	print_progress 'Install user scripts'
 		
-	chsh "$USER" --shell /bin/zsh
+	#chsh "$USER" --shell /bin/zsh
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
 	install_package 'discord'
@@ -417,14 +417,11 @@ ending_script() { # {{
 	systemctl enable org.cups.cupsd.service
 	systemctl enable bluetooth.service
 	systemctl enable docker
+	systemctl start docker
 	
-	git clone https://gitlab.com/jnuutinen/minimal-menu
-	cd minimal-menu
-	sudo mkdir build
-	cd build
-	sudo cmake ..
-	sudo make install
-
+	docker run -d -p 9000:9000 --name Portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /home/nosirus/Docker/Portainer:/data portainer/portainer
+	docker run -d --name Emby -p 8096:8096 -p 8920:8920 -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
+	
 	enter_to_continue
 }
 # }}}
