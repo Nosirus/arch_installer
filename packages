@@ -56,6 +56,7 @@ yakuake
 mkvtoolnix-gui
 conky conky-manager
 docker
+gst-plugins-good
 
 # AUR Packages
 filebot-git
