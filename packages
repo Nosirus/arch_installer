@@ -57,6 +57,7 @@ gwenview
 ffmpegthumbs
 yakuake
 mkvtoolnix-gui
+mediainfo-gui
 #conky conky-manager
 docker
 gst-plugins-good
