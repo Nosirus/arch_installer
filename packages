@@ -33,7 +33,7 @@ libreoffice-fresh
 
 # terminal
 neofetch
-zsh powerline-fonts zsh-theme-powerlevel9k
+#zsh powerline-fonts zsh-theme-powerlevel9k
 
 
 # KVM manager
@@ -54,7 +54,7 @@ gwenview
 ffmpegthumbs
 yakuake
 mkvtoolnix-gui
-conky conky-manager
+#conky conky-manager
 docker
 gst-plugins-good
 
