@@ -61,6 +61,7 @@ mediainfo-gui
 #conky conky-manager
 docker
 gst-plugins-good
+samba
 
 # AUR Packages
 filebot-git
