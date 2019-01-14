@@ -414,6 +414,10 @@ ending_script() { # {{
 	
 	usermod -aG docker $USERNAME
 	
+
+	gpg --recv-keys 79BE3E4300411886	# Linus Torvalds
+	gpg --recv-keys 38DBBDC86092693E # Greg Kroah-Hartman (Linux kernel stable release signing key)
+	
 	adduser $USERNAME libvirtd
 	useradd libvirtd nosirus
 	
