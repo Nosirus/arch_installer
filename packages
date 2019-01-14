@@ -10,8 +10,9 @@
 # network interface
 networkmanager
 
-# browser
+# browser & mail
 firefox
+thunderbird
 
 # bluetooth
 bluez bluez-utils pulseaudio-bluetooth
