@@ -47,7 +47,6 @@ noto-fonts-cjk noto-fonts-emoji noto-fonts
 # other
 redshift #Adjusts the color temperature of your screen according to your surroundings.
 openssh 
-gparted
 filelight #View disk usage information
 virt-manager
 gwenview
