@@ -397,6 +397,7 @@ install_translation() { # {{{
 	read -p 'Translation: ' TRANSLATION
 	install_package libreoffice-fresh-"$TRANSLATION"
 	install_package firefox-i18n-"$TRANSLATION"
+	install_package thunderbird-i18n-"$TRANSLATION"
 	install_package hunspell-"$TRANSLATION"
 
 	enter_to_continue
