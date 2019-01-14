@@ -240,6 +240,7 @@ install_desktop_environment() { # {{{
 			install_package 'kscreen' # KDE screen management software
 			install_package 'plasma-browser-integration'
 			install_package 'kdenetwork-filesharing' # KDE Samba share
+			install_package 'partitionmanager' # KDE partition manager
 			setup_xinitrc 'startkde'
 			;;
 		XFCE)
