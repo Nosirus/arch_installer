@@ -420,7 +420,7 @@ ending_script() { # {{
 	systemctl start docker
 	
 	docker run -d --name Portainer --restart always -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/nosirus/Docker/Portainer:/data portainer/portainer
-	docker run -d --name Emby --restart always -p 8096:8096 -p 8920:8920 -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
+	docker run -d --name Emby --restart always -p 8096:8096 -p 8920:8920 -p 1900:1900/udp -p 7359:7359/udp -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
 	
 	enter_to_continue
 }
