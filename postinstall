@@ -416,6 +416,7 @@ ending_script() { # {{
 	
 	systemctl enable org.cups.cupsd.service
 	systemctl enable bluetooth.service
+	systemctl enable libvirtd
 	systemctl enable docker
 	systemctl start docker
 	
