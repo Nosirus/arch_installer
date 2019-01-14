@@ -39,6 +39,9 @@ neofetch
 # KVM manager
 virt-manager
 
+# Printer
+cups
+
 # script/CLI tools
 
 # Japanese characters to show properly in Firefox
