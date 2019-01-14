@@ -241,6 +241,9 @@ install_desktop_environment() { # {{{
 			install_package 'plasma-browser-integration'
 			install_package 'kdenetwork-filesharing' # KDE Samba share
 			install_package 'partitionmanager' # KDE partition manager
+			install_package 'skanlite' # KDE scanning application
+			install_package 'ksystemlog' # KDE log viewer tool
+			 
 			setup_xinitrc 'startkde'
 			;;
 		XFCE)
