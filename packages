@@ -37,7 +37,7 @@ neofetch
 
 
 # KVM manager
-virt-manager
+virt-manager qemu
 
 # Printer
 cups
