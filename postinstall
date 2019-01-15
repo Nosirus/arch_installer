@@ -82,7 +82,6 @@ install_requirements() { # {{{
 	install_package 'figlet'
 
 	#install_package 'vim'
-	cp /conf/amar.conf /etc/pacman.d/amar.conf
 
 	# a python script to sort mirrorlist
 	install_package 'python reflector'
