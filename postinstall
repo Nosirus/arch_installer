@@ -81,7 +81,6 @@ install_requirements() { # {{{
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
-	#install_package 'vim'
 	install_package 'go'
 
 	# a python script to sort mirrorlist
@@ -168,22 +167,18 @@ install_aur_helper() { # {{{
 	print_title 'AUR HELPER'
 	print_info "AUR helpers automate certain tasks for using the Arch User Repository. Most helpers automate the process of retrieving a package's PKGBUILD from the AUR and building the package."
 
-	if ! has_package trizen; then
+	if ! has_package yay; then
 		echo
-		print_progress 'Install trizen..'
-		# running makepkg as root is not allowed as it can cause permanent, catastrophic damage to your system
+		print_progress 'Install yay..'
+		sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
 		su --login "$USERNAME" -c '
-		sed -i 's/#Color/Color/g' /etc/pacman.conf
-		#mkdir -p /tmp/aui_packages
-		#cd /tmp/aui_packages
-		#curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=trizen
-		#makepkg --install --clean --syncdeps --needed --noconfirm PKGBUILD
+		
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
 		makepkg -si
 		'
 	else
-		print_warning 'trizen has already been installed'
+		print_warning 'yay has already been installed'
 	fi
 
 	enter_to_continue
