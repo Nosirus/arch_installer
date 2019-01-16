@@ -88,7 +88,7 @@ install_requirements() { # {{{
 }
 # }}}
 
-select_user_account() { # {{{
+create_user_account() { # {{{
 	OPTION=n
 	while [[ "$OPTION" == n ]]; do
 		print_title 'ACCOUNT'
@@ -107,7 +107,9 @@ select_user_account() { # {{{
 }
 # }}}
 
-create_user_account() { # {{{
+select_user_account() { # {{{
+	ask_default_option "$USERNAME" create_user_account
+	update_option 'USERNAME'
 	#print_title 'ACCOUNT'
 	#print_info 'Create your user account'
 
