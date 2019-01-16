@@ -82,6 +82,7 @@ install_requirements() { # {{{
 	install_package 'figlet'
 
 	#install_package 'vim'
+	install_package 'go'
 
 	# a python script to sort mirrorlist
 	install_package 'python reflector'
@@ -289,7 +290,7 @@ install_display_manager() { # {{{
 }
 # }}}
 
-install_base() { # {{{
+install_packages() { # {{{
 	local arch_packages npm_packages pip_packages
 
 	arch_packages="$(read_packages "$PROJECT_ROOT/packages")"
@@ -387,6 +388,7 @@ install_fonts() { # {{{
 	enter_to_continue
 }
 # }}}
+
 #install_theme() { # {{{
 #	print_progress 'Install theme and icon for desktop environment'
 #	# install_package 'arc-gtk-theme'
@@ -396,6 +398,7 @@ install_fonts() { # {{{
 # }}}
 
 install_translation() { # {{{
+	print_progress 'Install translation'
    print_title 'TRANSLATION'
 	print_info 'type fr for french translation'
 	read -p 'Translation: ' TRANSLATION
@@ -408,31 +411,37 @@ install_translation() { # {{{
 }
 # }}}
 
-ending_script() { # {{
-	print_progress 'Install user scripts'
+install_docker() { # {{
+	print_progress 'Install Docker & Portainer'
 		
-	#chsh "$USER" --shell /bin/zsh
-	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
-	
-	#install_package 'discord'
-	
 	usermod -aG docker $USERNAME
 	
-
-	gpg --recv-keys 79BE3E4300411886	# Linus Torvalds
-	gpg --recv-keys 38DBBDC86092693E # Greg Kroah-Hartman (Linux kernel stable release signing key)
-	
-	adduser $USERNAME libvirtd
-	useradd libvirtd nosirus
-	
-	systemctl enable org.cups.cupsd.service
-	systemctl enable bluetooth.service
-	systemctl enable libvirtd
 	systemctl enable docker
 	systemctl start docker
 	
 	docker run -d --name Portainer --restart always -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/nosirus/Docker/Portainer:/data portainer/portainer
-	docker run -d --name Emby --restart always -p 8096:8096 -p 8920:8920 -p 1900:1900/udp -p 7359:7359/udp -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
+	#docker run -d --name Emby --restart always -p 8096:8096 -p 8920:8920 -p 1900:1900/udp -p 7359:7359/udp -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
+	
+	enter_to_continue
+}
+# }}}
+
+ending_script() { # {{
+	print_progress 'Install user scripts'
+		
+	#chsh "$USER" --shell /bin/zsh
+	
+	print_progress 'Fix firefox font issue on archlinux'
+	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
+	
+	print_progress 'Add user to libvirt group'
+	sudo usermod -a -G libvirt "$USERNAME"
+	
+	systemctl enable org.cups.cupsd.service
+	systemctl enable bluetooth.service
+	systemctl enable libvirtd
+	
+	setxkbmap -layout "$TRANSLATION"
 	
 	enter_to_continue
 }
@@ -464,8 +473,9 @@ install() { # {{{
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
 		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
-		echo "    9. $(mainmenu_item "${checklist[8]}"  'Ending script')"
-		echo "   10. $(mainmenu_item "${checklist[9]}"  'Finish')"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Ending script')"
+		echo "   11. $(mainmenu_item "${checklist[10]}"  'Finish')"
 		echo
 
 		read -p "Enter option (1-10): " OPTION
@@ -488,7 +498,7 @@ install() { # {{{
 				checklist[3]=1
 				;;
 			5)
-				install_base
+				install_packages
 				checklist[4]=1
 				;;
 			6)
@@ -504,12 +514,16 @@ install() { # {{{
 				checklist[7]=1
 				;;
 			9)	
-				ending_script
+				install_docker
 				checklist[8]=1
 				;;
-			10)
-				finish
+			10)	
+				ending_script
 				checklist[9]=1
+				;;
+			11)
+				finish
+				checklist[10]=1
 				;;
 			*)
 				invalid_option
