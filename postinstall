@@ -113,8 +113,8 @@ select_user_account() { # {{{
 	#print_title 'ACCOUNT'
 	#print_info 'Create your user account'
 
-	read -p 'Username: ' USERNAME
-	update_option 'USERNAME'
+	#read -p 'Username: ' USERNAME
+	#update_option 'USERNAME'
 	useradd -m -g users -G wheel -s /bin/bash "$USERNAME"
 	passwd "$USERNAME"
 
