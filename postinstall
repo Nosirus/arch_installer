@@ -81,8 +81,6 @@ install_requirements() { # {{{
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
-	install_package 'go'
-
 	# a python script to sort mirrorlist
 	install_package 'python reflector'
 }
@@ -187,6 +185,7 @@ install_aur_helper() { # {{{
 	if ! has_package yay; then
 		echo
 		print_progress 'Install yay..'
+		install_package 'go'
 		sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
 		su --login "$USERNAME" -c '
 		
