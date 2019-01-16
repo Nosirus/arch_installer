@@ -88,9 +88,28 @@ install_requirements() { # {{{
 }
 # }}}
 
+select_user_account() { # {{{
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'ACCOUNT'
+		print_info 'Create your user account'
+
+		echo
+		read_input 'Enter user name: '
+
+		if [[ "$OPTION" != '' ]]; then
+			USERNAME="$OPTION"
+			confirm_yes "Confirm user name ($USERNAME)"
+		else
+			invalid_option
+		fi
+	done
+}
+# }}}
+
 create_user_account() { # {{{
-	print_title 'ACCOUNT'
-	print_info 'Create your user account'
+	#print_title 'ACCOUNT'
+	#print_info 'Create your user account'
 
 	read -p 'Username: ' USERNAME
 	update_option 'USERNAME'
@@ -477,7 +496,7 @@ install() { # {{{
 
 		case "$OPTION" in
 			1)
-				create_user_account
+				select_user_account
 				checklist[0]=1
 				;;
 			2)
