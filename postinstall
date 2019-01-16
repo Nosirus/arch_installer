@@ -456,6 +456,10 @@ ending_script() { # {{
 	
 	setxkbmap -layout "$TRANSLATION"
 	
+	su --login "$USERNAME" -c '
+	chsh -s $(which zsh)
+	'
+	
 	enter_to_continue
 }
 # }}}
