@@ -95,11 +95,11 @@ create_user_account() { # {{{
 		print_info 'Create your user account'
 
 		echo
-		read_input 'Enter user name: '
+		read_input 'Enter username: '
 
 		if [[ "$OPTION" != '' ]]; then
 			USERNAME="$OPTION"
-			confirm_yes "Confirm user name ($USERNAME)"
+			confirm_yes "Confirm username ($USERNAME)"
 		else
 			invalid_option
 		fi
@@ -110,11 +110,7 @@ create_user_account() { # {{{
 select_user_account() { # {{{
 	ask_default_option "$USERNAME" create_user_account
 	update_option 'USERNAME'
-	#print_title 'ACCOUNT'
-	#print_info 'Create your user account'
 
-	#read -p 'Username: ' USERNAME
-	#update_option 'USERNAME'
 	useradd -m -g users -G wheel -s /bin/bash "$USERNAME"
 	passwd "$USERNAME"
 
