@@ -172,10 +172,13 @@ install_aur_helper() { # {{{
 		print_progress 'Install trizen..'
 		# running makepkg as root is not allowed as it can cause permanent, catastrophic damage to your system
 		su --login "$USERNAME" -c '
-		mkdir -p /tmp/aui_packages
-		cd /tmp/aui_packages
-		curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=trizen
-		makepkg --install --clean --syncdeps --needed --noconfirm PKGBUILD
+		#mkdir -p /tmp/aui_packages
+		#cd /tmp/aui_packages
+		#curl -o PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=trizen
+		#makepkg --install --clean --syncdeps --needed --noconfirm PKGBUILD
+		git clone https://aur.archlinux.org/yay.git
+		cd yay
+		makepkg -si
 		'
 	else
 		print_warning 'trizen has already been installed'
