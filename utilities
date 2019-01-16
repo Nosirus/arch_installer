@@ -187,9 +187,7 @@ install_aur_package() { # {{{
 	local packages="$1"
 
 	for package in ${packages}; do
-		#su --login "$USERNAME" -c "trizen -S --noconfirm --needed $package" # install if not exists
 		su --login "$USERNAME" -c "yay -S --noconfirm --needed $package" # install if not exists
-		#rm -rf "/tmp/trizen-${USERNAME}/*"
 		rm -rf "/tmp/yay-${USERNAME}/*"
 	done
 }
