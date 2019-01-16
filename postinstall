@@ -73,6 +73,8 @@ configure_sudo() { # {{{
 # }}}
 install_requirements() { # {{{
 	print_progress 'Install script dependencies'
+	
+	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
 
 	setup_console_font
 
@@ -186,7 +188,7 @@ install_aur_helper() { # {{{
 		echo
 		print_progress 'Install yay..'
 		install_package 'go'
-		sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
+
 		su --login "$USERNAME" -c '
 		
 		git clone https://aur.archlinux.org/yay.git
