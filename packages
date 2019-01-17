@@ -64,6 +64,7 @@ gst-plugins-good
 samba
 notepadqq
 qbittorrent
+htop
 
 # AUR Packages
 filebot-git
