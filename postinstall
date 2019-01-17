@@ -453,6 +453,8 @@ ending_script() { # {{
 	systemctl enable org.cups.cupsd.service
 	systemctl enable bluetooth.service
 	systemctl enable libvirtd
+	
+	cp /conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
 	
 	setxkbmap -layout "$TRANSLATION"
