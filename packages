@@ -62,6 +62,7 @@ mediainfo-gui
 docker
 gst-plugins-good
 samba
+notepadqq
 
 # AUR Packages
 filebot-git
