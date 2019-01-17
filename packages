@@ -63,6 +63,7 @@ docker
 gst-plugins-good
 samba
 notepadqq
+qbittorrent
 
 # AUR Packages
 filebot-git
