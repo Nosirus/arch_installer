@@ -455,6 +455,9 @@ ending_script() { # {{
 	#Neofetch
 	cp /conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 	
+	#Zsh
+	cp /conf/.zshrc /home/"$USERNAME"/.zshrc
+	
 	#Samba
 	cp /conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
