@@ -33,7 +33,7 @@ libreoffice-fresh
 
 # terminal
 neofetch
-zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting
+zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosuggestions
 
 
 # KVM manager
