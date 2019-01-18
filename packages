@@ -33,7 +33,7 @@ libreoffice-fresh
 
 # terminal
 neofetch
-zsh powerline-fonts zsh-theme-powerlevel9k
+zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting
 
 
 # KVM manager
@@ -67,7 +67,7 @@ qbittorrent
 htop
 
 # AUR Packages
-filebot-git
+#filebot-git
 snapraid
 mergerfs
 qmplay2
@@ -76,7 +76,7 @@ octopi
 plasma5-applets-plasma-pstate
 plasma5-applets-eventcalendar
 ctop
-qownnotes
+#qownnotes
 #angrysearch
 fd #Simple, fast and user-friendly alternative to find
 jdownloader2
@@ -84,6 +84,5 @@ diskmonitor
 better-plasma5-video-wallpaper-git
 discord
 lscolors-git
-oh-my-zsh-git
 
 # vim ft=conf
