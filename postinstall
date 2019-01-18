@@ -442,25 +442,28 @@ install_docker() { # {{
 ending_script() { # {{
 	print_progress 'Install user scripts'
 		
-	#chsh "$USER" --shell /bin/zsh
-	
 	print_progress 'Fix firefox font issue on archlinux'
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
 	print_progress 'Add user to libvirt group'
 	sudo usermod -a -G libvirt "$USERNAME"
 	
-	systemctl enable org.cups.cupsd.service
-	systemctl enable bluetooth.service
-	systemctl enable libvirtd
+	systemctl enable org.cups.cupsd.service #printer service
+	systemctl enable bluetooth.service #bluetooth service
+	systemctl enable libvirtd #virtual manager service
 	
+	#Neofetch
+	cp /conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
+	
+	#Samba
 	cp /conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
 	
 	setxkbmap -layout "$TRANSLATION"
 	
 	su --login "$USERNAME" -c '
-	chsh -s $(which zsh)
+	#chsh -s $(which zsh)
+	chsh -s /bin/zsh "$USERNAME"
 	'
 	
 	enter_to_continue
