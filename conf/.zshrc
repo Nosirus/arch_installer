@@ -67,3 +67,6 @@ alias h="htop"
 alias maj='sudo pacman -Syu'
 alias up='sudo pacman -Sy'
 alias ls="ls --color"
+alias ys="yay -S --noconfirm --needed --removemake --cleanafter"
+alias yr="yay -R"
+alias yc="yay -Yc"
