@@ -261,7 +261,7 @@ install_desktop_environment() { # {{{
 			install_package 'partitionmanager' # KDE partition manager
 			install_package 'skanlite' # KDE scanning application
 			install_package 'ksystemlog' # KDE log viewer tool
-			 
+			install_package 'user-manager' # KDE manager user			 
 			setup_xinitrc 'startkde'
 			;;
 		XFCE)
