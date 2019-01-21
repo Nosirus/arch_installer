@@ -453,13 +453,14 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	
 	#Neofetch
+	mkdir -p /home/"$USERNAME"/.config/neofetch
 	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 	
 	#Zsh
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	
 	#Samba
-	cp /conf/smb.conf /etc/samba/smb.conf
+	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
 	
 	setxkbmap -layout "$TRANSLATION"
