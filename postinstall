@@ -453,10 +453,10 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	
 	#Neofetch
-	cp /conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
+	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 	
 	#Zsh
-	cp /conf/.zshrc /home/"$USERNAME"/.zshrc
+	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	
 	#Samba
 	cp /conf/smb.conf /etc/samba/smb.conf
@@ -465,8 +465,8 @@ ending_script() { # {{
 	setxkbmap -layout "$TRANSLATION"
 	
 	su --login "$USERNAME" -c '
-	#chsh -s $(which zsh)
-	chsh -s /bin/zsh "$USERNAME"
+	chsh -s $(which zsh)
+	#chsh -s /bin/zsh "$USERNAME"
 	'
 	
 	enter_to_continue
