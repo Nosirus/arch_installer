@@ -463,11 +463,10 @@ ending_script() { # {{
 	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
 	
-	setxkbmap -layout "$TRANSLATION"
+	rm -r /home/"$USERNAME"/yay
 	
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
-	#chsh -s /bin/zsh "$USERNAME"
 	'
 	
 	enter_to_continue
