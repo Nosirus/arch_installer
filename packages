@@ -67,6 +67,7 @@ notepadqq
 qbittorrent
 htop
 plasma5-applets-thermal-monitor
+qt5-xmlpatterns #for qownnotes
 
 # AUR Packages
 #filebot-git
