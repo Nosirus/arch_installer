@@ -67,10 +67,9 @@ notepadqq
 qbittorrent
 htop
 plasma5-applets-thermal-monitor
-qt5-xmlpatterns #for qownnotes
 
 # AUR Packages
-#filebot-git
+filebot #or filebot-git
 snapraid
 mergerfs
 qmplay2
@@ -79,14 +78,14 @@ octopi
 plasma5-applets-plasma-pstate
 plasma5-applets-eventcalendar
 ctop
-#qownnotes
 #angrysearch
 fd #Simple, fast and user-friendly alternative to find
 jdownloader2
 diskmonitor
 better-plasma5-video-wallpaper-git
---mflags --nocheck libc++abi libc++
+libc++abi libc++ --mflags --nocheck
 discord
 lscolors-git
+boostnote
 
 # vim ft=conf
