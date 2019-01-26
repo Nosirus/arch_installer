@@ -90,5 +90,7 @@ libc++abi libc++ --mflags --nocheck
 discord
 lscolors-git
 boostnote
+snap-pac #no aur
+snap-pac-grub
 
 # vim ft=conf
