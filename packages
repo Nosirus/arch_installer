@@ -72,7 +72,7 @@ plasma5-applets-thermal-monitor
 sshfs #for KDE connect
 
 # AUR Packages
-filebot #or filebot-git
+filebot47 #or filebot
 snapraid
 mergerfs
 qmplay2
