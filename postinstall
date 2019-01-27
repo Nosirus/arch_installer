@@ -465,6 +465,9 @@ ending_script() { # {{
 	
 	rm -r /home/"$USERNAME"/yay
 	
+	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
+	grub-mkconfig -o /boot/grub/grub.cfg
+	
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
 	'
