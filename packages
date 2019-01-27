@@ -15,10 +15,11 @@ firefox
 thunderbird
 
 # bluetooth
-bluez bluez-utils pulseaudio-bluetooth
+bluez bluez-utils pulseaudio-bluetooth bluedevil
 
 # audio
 pulseaudio pulseaudio-alsa
+clementine-qt5-git
 
 # filesystem
 ntfs-3g # read/write Window files from linux
@@ -62,7 +63,7 @@ mkvtoolnix-gui
 mediainfo-gui
 #conky conky-manager
 docker
-gst-plugins-good
+gst-plugins-good gst-libav
 samba
 notepadqq
 qbittorrent
