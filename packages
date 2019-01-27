@@ -92,5 +92,6 @@ lscolors-git
 boostnote
 snap-pac #no aur
 snap-pac-grub
+systemd-kcm
 
 # vim ft=conf
