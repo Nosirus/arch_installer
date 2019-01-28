@@ -210,9 +210,9 @@ mount_partitions() { # {{{
 
 	btrfs subvolume create /mnt/@root
 	btrfs subvolume create /mnt/@snapshots
-	umount /mnt
-	mount -o compress=lzo,subvol=@root "$MOUNTPOINT" /mnt
-	mount -o compress=lzo,subvol=@snapshots "$MOUNTPOINT" /mnt/.snapshots
+	#umount /mnt
+	mount -o compress=lzo,subvol=@root /dev/vda2 /mnt
+	mount -o compress=lzo,subvol=@snapshots /dev/vda2 /mnt/.snapshots
 	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
