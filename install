@@ -208,12 +208,12 @@ format_partitions() { # {{{
 mount_partitions() { # {{{
 	print_progress 'Mounting partitions..'
 
-	btrfs subvolume create /mnt/@root
-	btrfs subvolume create /mnt/@snapshots
+	#btrfs subvolume create /mnt/@root
+	#btrfs subvolume create /mnt/@snapshots
 	#umount /mnt
-	mount -o compress=lzo,subvol=@root /dev/vda2 /mnt
-	mount -o compress=lzo,subvol=@snapshots /dev/vda2 /mnt/.snapshots
-	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
+	#mount -o compress=lzo,subvol=@root /dev/vda2 /mnt
+	#mount -o compress=lzo,subvol=@snapshots /dev/vda2 /mnt/.snapshots
+	mount "$ROOT_PARTITION" "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
