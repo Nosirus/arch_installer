@@ -41,6 +41,8 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
+	
+	install_package 'grub-theme-vimix'
 }
 # }}}
 pre_install() { # {{{
@@ -496,7 +498,7 @@ setup_bootloader() { # {{{
 	# arch_chroot "grub-install $DEVICE"
 	arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=$boot_id --recheck"
 
-	setup_bootloader_theme
+	#setup_bootloader_theme
 
 	if [[ ! -f "${MOUNTPOINT}/etc/default/grub.aui" ]]; then
 		cp -v "${MOUNTPOINT}/etc/default/grub" "${MOUNTPOINT}/etc/default/grub.aui" 
