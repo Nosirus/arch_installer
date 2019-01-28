@@ -239,7 +239,7 @@ install_desktop_environment() { # {{{
 			install_package 'ark' # archive
 			install_package 'konsole' # terminal
 			install_package 'dolphin' # file manager
-			install_package 'bluedevel' # bluetooth for KDE
+			install_package 'bluedevil' # bluetooth for KDE
 			install_package 'plasma-nm' # networkmanager for KDE
 			install_package 'plasma-pa' # puluseaudio for KDE
 			install_package 'kinfocenter' # see system information
