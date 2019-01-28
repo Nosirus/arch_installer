@@ -191,8 +191,7 @@ format_partitions() { # {{{
 
 		yes | mkfs.btrfs "$ROOT_PARTITION"
 		fsck "$ROOT_PARTITION"
-		mkdir -p /mnt/@root
-		btrfs subvolume create /mnt/@root
+		btrfs subvolume create /mnt/ROOT
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
 			yes | mkfs.xfs "$HOME_PARTITION"
@@ -210,7 +209,8 @@ format_partitions() { # {{{
 mount_partitions() { # {{{
 	print_progress 'Mounting partitions..'
 
-	mount "$ROOT_PARTITION" subvol=@root "$MOUNTPOINT"
+	mkdir -p /mnt/ROOT
+	#mount "$ROOT_PARTITION" subvol=/mnt/ROOT "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
