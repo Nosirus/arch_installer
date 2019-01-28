@@ -219,6 +219,7 @@ mount_partitions() { # {{{
 	btrfs subvolume create /mnt/@snapshots
 	umount /mnt
 	mount -o noatime,compress=lzo,space_cache,subvol=@root "$ROOT_PARTITION" /mnt
+	mkdir /mnt/.snapshots
 	mount -o noatime,compress=lzo,space_cache,subvol=@snapshots "$ROOT_PARTITION" /mnt/.snapshots
 	
 	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
