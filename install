@@ -196,6 +196,8 @@ mount_partitions() { # {{{
 
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
+	
+	mkdir -p /boot
 
 	swapon "$SWAP_PARTITION"
 }
