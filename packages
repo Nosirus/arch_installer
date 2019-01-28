@@ -15,11 +15,11 @@ firefox
 thunderbird
 
 # bluetooth
-bluez bluez-utils pulseaudio-bluetooth bluedevil
+bluez bluez-utils pulseaudio-bluetooth
 
 # audio
 pulseaudio pulseaudio-alsa
-clementine-qt5-git
+#clementine-qt5-git
 
 # filesystem
 ntfs-3g # read/write Window files from linux
