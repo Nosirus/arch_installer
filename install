@@ -41,8 +41,6 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
-	
-	install_package 'grub-theme-vimix'
 }
 # }}}
 pre_install() { # {{{
@@ -478,9 +476,9 @@ configure_mkinitcpio() { # {{{
 setup_bootloader_theme() { # {{{
 	print_progress 'Install theme for grub'
 	#git clone 'https://github.com/NearHuscarl/grub2-themes' /tmp/grub2-themes
-	#cp -rd /tmp/grub2-themes/grub-theme-vimix/Vimix "${MOUNTPOINT}/boot/grub/themes"
-	#rm -rd /tmp/grub2-themes
-	install_package 'grub-theme-vimix'
+	git clone 'https://github.com/vinceliuice/grub2-themes' /tmp/grub2-themes
+	cp -rd /tmp/grub2-themes/grub-theme-vimix/Vimix "${MOUNTPOINT}/boot/grub/themes"
+	rm -rd /tmp/grub2-themes
 }
 # }}}
 setup_bootloader() { # {{{
@@ -498,7 +496,7 @@ setup_bootloader() { # {{{
 	# arch_chroot "grub-install $DEVICE"
 	arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=$boot_id --recheck"
 
-	#setup_bootloader_theme
+	setup_bootloader_theme
 
 	if [[ ! -f "${MOUNTPOINT}/etc/default/grub.aui" ]]; then
 		cp -v "${MOUNTPOINT}/etc/default/grub" "${MOUNTPOINT}/etc/default/grub.aui" 
