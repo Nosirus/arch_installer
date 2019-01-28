@@ -103,7 +103,7 @@ format_partitions() { # {{{
 	local partitions partition_names format_partition_names partition_number
 	
 	partitions=($(lsblk -pl | grep 'part' | awk '{print $1}'))
-	partition_names=(root home swap boot)
+	partition_names=(root home swap)
 	format_partition_names=(root swap) # always format these partitions
 
 	for partition_name in ${partition_names[@]}; do
@@ -125,9 +125,6 @@ format_partitions() { # {{{
 						;;
 					swap)
 						SWAP_PARTITION="$partition"
-						;;
-					boot)
-						BOOT_PARTITION="$partition"
 						;;
 				esac
 
@@ -154,9 +151,6 @@ format_partitions() { # {{{
 				home)
 					FORMAT_HOME_PARTITION=1
 					;;
-				boot)
-					FORMAT_BOOT_PARTITION=1
-					;;
 			esac
 		fi
 	done
@@ -175,19 +169,9 @@ format_partitions() { # {{{
 
 	echo "${BLUE}${SWAP_PARTITION}${RESET} ${RED}(swap)${RESET} will be formatted"
 
-	if [[ "$FORMAT_BOOT_PARTITION" == 1 ]]; then
-		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}/boot${RESET}"
-	else
-		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/boot${RESET}"
-	fi
-
 	echo
 	confirm 'Confirm formatting partitions'
 	if [[ "$OPTION" == y ]]; then
-		if [[ "$FORMAT_BOOT_PARTITION" == 1 ]]; then
-			yes | mkfs.vfat "$BOOT_PARTITION"
-			fsck "$BOOT_PARTITION"
-		fi
 
 		yes | mkfs.btrfs "$ROOT_PARTITION"
 		fsck "$ROOT_PARTITION"
@@ -212,9 +196,6 @@ mount_partitions() { # {{{
 
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
-
-	mkdir -p "$MOUNTPOINT/boot"
-	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot"
 
 	swapon "$SWAP_PARTITION"
 }
