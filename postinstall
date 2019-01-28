@@ -467,6 +467,9 @@ ending_script() { # {{
 	
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
+
+	echo "KEYMAP=\"fr\"" >> /etc/vconsole.conf
+	echo "LANG=\"fr_FR.UTF-8\"" >> /etc/locale.conf
 	
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
