@@ -461,9 +461,10 @@ configure_mkinitcpio() { # {{{
 
 setup_bootloader_theme() { # {{{
 	print_progress 'Install theme for grub'
-	git clone 'https://github.com/NearHuscarl/grub2-themes' /tmp/grub2-themes
-	cp -rd /tmp/grub2-themes/grub-theme-vimix/Vimix "${MOUNTPOINT}/boot/grub/themes"
-	rm -rd /tmp/grub2-themes
+	#git clone 'https://github.com/NearHuscarl/grub2-themes' /tmp/grub2-themes
+	#cp -rd /tmp/grub2-themes/grub-theme-vimix/Vimix "${MOUNTPOINT}/boot/grub/themes"
+	#rm -rd /tmp/grub2-themes
+	install_package 'grub-theme-vimix'
 }
 # }}}
 setup_bootloader() { # {{{
