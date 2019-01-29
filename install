@@ -218,7 +218,8 @@ mount_partitions() { # {{{
 	btrfs subvolume create /mnt/@root
 	#btrfs subvolume create /mnt/@snapshots
 	umount /mnt
-	mount -o noatime,compress=lzo,space_cache,subvol=@root "$ROOT_PARTITION" /mnt
+	mount -o noatime,compress=lzo,space_cache "$ROOT_PARTITION" /mnt
+	#mount -o noatime,compress=lzo,space_cache,subvol=@root "$ROOT_PARTITION" /mnt
 	#mkdir /mnt/.snapshots
 	#mount -o noatime,compress=lzo,space_cache,subvol=@snapshots "$ROOT_PARTITION" /mnt/.snapshots
 	
@@ -267,7 +268,7 @@ generate_fstab() { # {{{
 	echo
 	print_progress 'Generating fstab file...'
 	genfstab -U "$MOUNTPOINT" > "$MOUNTPOINT/etc/fstab"
-
+	
 	echo
 	print_info "$MOUNTPOINT/etc/fstab"
 	cat ${MOUNTPOINT}/etc/fstab
