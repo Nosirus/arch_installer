@@ -268,7 +268,7 @@ generate_fstab() { # {{{
 	print_progress 'Generating fstab file...'
 	#genfstab -U "$MOUNTPOINT" > "$MOUNTPOINT/etc/fstab"
 	
-	genfstab -U -p "$MOUNTPOINT" >> "$MOUNTPOINT"/mnt/etc/fstab
+	genfstab -U -p "$MOUNTPOINT" >> "$MOUNTPOINT"/etc/fstab
 	
 	echo
 	print_info "$MOUNTPOINT/etc/fstab"
