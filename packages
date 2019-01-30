@@ -12,10 +12,10 @@ networkmanager
 
 # browser & mail
 firefox
-thunderbird
+#thunderbird
 
 # bluetooth
-bluez bluez-utils pulseaudio-bluetooth
+#bluez bluez-utils pulseaudio-bluetooth
 
 # audio
 pulseaudio pulseaudio-alsa
@@ -25,14 +25,14 @@ pulseaudio pulseaudio-alsa
 ntfs-3g # read/write Window files from linux
 
 # development tool
-kdenlive
-krita
-handbrake
-soundkonverter
+#kdenlive
+#krita
+#handbrake
+#soundkonverter
 
 
 # text editor
-libreoffice-fresh
+#libreoffice-fresh
 
 # terminal
 neofetch
@@ -40,36 +40,36 @@ zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosugge
 
 
 # KVM manager
-virt-manager qemu
+#virt-manager qemu
 
 # Printer
-cups
+#cups
 
 # script/CLI tools
 
 # Japanese characters to show properly in Firefox
-noto-fonts-cjk noto-fonts-emoji noto-fonts
+#noto-fonts-cjk noto-fonts-emoji noto-fonts
 
 
 # other
-redshift #Adjusts the color temperature of your screen according to your surroundings.
-openssh 
-filelight #View disk usage information
-virt-manager
-gwenview
-ffmpegthumbs
-yakuake
-mkvtoolnix-gui
-mediainfo-gui
+#redshift #Adjusts the color temperature of your screen according to your surroundings.
+#openssh 
+#filelight #View disk usage information
+#virt-manager
+#gwenview
+#ffmpegthumbs
+#yakuake
+#mkvtoolnix-gui
+#mediainfo-gui
 #conky conky-manager
-docker
-gst-plugins-good gst-libav
+#docker
+#gst-plugins-good gst-libav
 samba
 notepadqq
-qbittorrent
-htop
-plasma5-applets-thermal-monitor
-sshfs #for KDE connect
+#qbittorrent
+#htop
+#plasma5-applets-thermal-monitor
+#sshfs #for KDE connect
 
 # AUR Packages
 #filebot47 #or filebot
