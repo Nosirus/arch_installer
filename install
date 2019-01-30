@@ -185,7 +185,7 @@ format_partitions() { # {{{
 	confirm 'Confirm formatting partitions'
 	if [[ "$OPTION" == y ]]; then
 		if [[ "$FORMAT_BOOT_PARTITION" == 1 ]]; then
-			yes | mkfs.vfat "$BOOT_PARTITION"
+			yes | mkfs.vfat -F32 "$BOOT_PARTITION"
 			fsck "$BOOT_PARTITION"
 		fi
 
