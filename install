@@ -215,15 +215,12 @@ mount_partitions() { # {{{
 	#mount -o compress=lzo,subvol=@snapshots /dev/vda2 /mnt/.snapshots
 	
 	mount "$ROOT_PARTITION" /mnt
-	btrfs subvolume create /mnt/root
-	btrfs subvolume create /mnt/snapshots
+	btrfs subvolume create /mnt/@root
+	btrfs subvolume create /mnt/@snapshots
 	umount /mnt
-	mount -o noatime,nodiratime,discard,compress=lzo,subvol=root "$ROOT_PARTITION" /mnt
-	mkdir -p /mnt/mnt/btrfs-root
+	mount -o noatime,compress=lzo,space_cache,subvol=@root "$ROOT_PARTITION" /mnt/
 	mkdir -p /mnt/.snapshots
-	mount -o noatime,nodiratime,discard,compress=lzo,subvol=/ "$ROOT_PARTITION" /mnt/mnt/btrfs-root
-	#mount -o noatime,compress=lzo,space_cache,subvol=@snapshots "$ROOT_PARTITION" /mnt/.snapshots
-	mount -o noatime,nodiratime,discard,compress=lzo,subvol=snapshots "$ROOT_PARTITION" /mnt/.snapshots
+	mount -o noatime,compress=lzo,space_cache,subvol=@snapshots "$ROOT_PARTITION" /mnt/.snapshots
 	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
