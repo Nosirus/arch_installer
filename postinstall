@@ -471,6 +471,7 @@ ending_script() { # {{
 	install_package 'grub-btrfs'
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
+	sed -i '/PathModified=/.snapshots/ s/^#*/#/' /usr/lib/systemd/system/grub-btrfs.path
 	sed -i '/.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /usr/lib/systemd/system/grub-btrfs.path
 	systemctl daemon-reload && systemctl enable grub-btrfs.path
 
