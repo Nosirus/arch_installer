@@ -176,20 +176,20 @@ format_partitions() { # {{{
 	echo "${BLUE}${SWAP_PARTITION}${RESET} ${RED}(swap)${RESET} will be formatted"
 
 	if [[ "$FORMAT_BOOT_PARTITION" == 1 ]]; then
-		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}/boot${RESET}"
+		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be formatted and mounted to ${GREEN}${MOUNTPOINT}/boot/efi${RESET}"
 	else
-		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/boot${RESET}"
+		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/boot/efi${RESET}"
 	fi
 
 	echo
 	confirm 'Confirm formatting partitions'
 	if [[ "$OPTION" == y ]]; then
 		if [[ "$FORMAT_BOOT_PARTITION" == 1 ]]; then
-			yes | mkfs.vfat "$BOOT_PARTITION"
+			yes | mkfs.vfat -F32 "$BOOT_PARTITION"
 			fsck "$BOOT_PARTITION"
 		fi
 
-		yes | mkfs.btrfs "$ROOT_PARTITION"
+		yes | mkfs.btrfs -L btrfs "$ROOT_PARTITION"
 		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
@@ -215,20 +215,19 @@ mount_partitions() { # {{{
 	#mount -o compress=lzo,subvol=@snapshots /dev/vda2 /mnt/.snapshots
 	
 	mount "$ROOT_PARTITION" /mnt
-	btrfs subvolume create /mnt/@root
+	btrfs subvolume create /mnt/@
 	#btrfs subvolume create /mnt/@snapshots
 	umount /mnt
-	mount -o noatime,compress=lzo,space_cache,subvol=@root "$ROOT_PARTITION" /mnt
-	#mkdir /mnt/.snapshots
+	mount -o noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" /mnt/
+	#mkdir -p /mnt/.snapshots
 	#mount -o noatime,compress=lzo,space_cache,subvol=@snapshots "$ROOT_PARTITION" /mnt/.snapshots
-	
 	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
-	mkdir -p "$MOUNTPOINT/boot"
-	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot"
+	mkdir -p "$MOUNTPOINT/boot/efi"
+	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot/efi"
 
 	swapon "$SWAP_PARTITION"
 }
@@ -494,7 +493,7 @@ setup_bootloader() { # {{{
 
 	print_progress 'Install grub'
 	# arch_chroot "grub-install $DEVICE"
-	arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=$boot_id --recheck"
+	arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=$boot_id --recheck"
 
 	setup_bootloader_theme
 
