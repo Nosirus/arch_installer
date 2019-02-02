@@ -74,7 +74,7 @@ configure_sudo() { # {{{
 install_requirements() { # {{{
 	print_progress 'Install script dependencies'
 	
-	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
+	sed -i "${has_Color}s/^#//" /etc/pacman.conf
 
 	setup_console_font
 
@@ -471,12 +471,11 @@ ending_script() { # {{
 	install_package 'grub-btrfs'
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
-	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
-sed 's/regexp/\n&/g' 
-			sed -i "${has_multilib}s/^#//" /etc/pacman.conf
-			sed -i "${has_Color}s/^#//" /etc/pacman.conf
+	sed "s/'PathModified=/.snapshots'/'PathModified=/.snapshots'\n'PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots'/g"
 	systemctl daemon-reload && systemctl enable grub-btrfs.path
 
+	#Zsh
+	print_progress 'configure zsh for user'
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
 	'
