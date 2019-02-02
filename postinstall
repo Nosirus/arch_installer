@@ -478,6 +478,7 @@ ending_script() { # {{
 	print_progress 'configure zsh for user'
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
+	setopt -o incappendhistory
 	'
 	
 	enter_to_continue
