@@ -62,7 +62,6 @@ zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosugge
 #mkvtoolnix-gui
 #mediainfo-gui
 #conky conky-manager
-#docker
 #gst-plugins-good gst-libav
 samba
 notepadqq
