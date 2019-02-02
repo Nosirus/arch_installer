@@ -426,7 +426,8 @@ install_translation() { # {{{
 
 install_docker() { # {{
 	print_progress 'Install Docker & Portainer'
-		
+	install_package 'docker'
+	
 	usermod -aG docker $USERNAME
 	
 	systemctl enable docker
@@ -465,12 +466,17 @@ ending_script() { # {{
 	
 	rm -r /home/"$USERNAME"/yay
 	
+	#Grub-btrfs
+	print_progress 'Add snapshots (and timeshift) to grub and exclude docker'
+	install_package 'grub-btrfs'
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
+	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
+sed 's/regexp/\n&/g' 
+			sed -i "${has_multilib}s/^#//" /etc/pacman.conf
+			sed -i "${has_Color}s/^#//" /etc/pacman.conf
+	systemctl daemon-reload && systemctl enable grub-btrfs.path
 
-	echo "KEYMAP=\"fr\"" >> /etc/vconsole.conf
-	echo "LANG=\"fr_FR.UTF-8\"" >> /etc/locale.conf
-	
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
 	'
