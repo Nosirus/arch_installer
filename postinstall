@@ -452,6 +452,7 @@ ending_script() { # {{
 	systemctl enable org.cups.cupsd.service #printer service
 	systemctl enable bluetooth.service #bluetooth service
 	systemctl enable libvirtd #virtual manager service
+	systemctl enable cronie
 	
 	#Neofetch
 	mkdir -p /home/"$USERNAME"/.config/neofetch
