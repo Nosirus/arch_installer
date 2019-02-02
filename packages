@@ -93,5 +93,6 @@ kup #KDE rsync, bup front-end
 #snap-pac #no aur
 #snap-pac-grub
 #systemd-kcm
+#timeshift
 
 # vim ft=conf
