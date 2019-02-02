@@ -5,6 +5,9 @@ source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
 source /usr/share/LS_COLORS/dircolors.sh
 autoload -Uz compinit
 
+SAVEHIST=50
+HISTFILE=~/.zsh_history
+
 # Show OS info when opening a new terminal
 neofetch
 
