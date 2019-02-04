@@ -63,7 +63,6 @@ zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosugge
 #mediainfo-gui
 #conky conky-manager
 #gst-plugins-good gst-libav
-samba
 notepadqq
 #qbittorrent
 #htop
