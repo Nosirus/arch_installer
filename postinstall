@@ -442,8 +442,11 @@ install_docker() { # {{
 
 ending_script() { # {{
 	
-	"print_progress 'Add user to libvirt group'"
-	#sudo usermod -a -G libvirt "$USERNAME"
+	print_progress 'Add user to libvirt group'
+	sudo usermod -a -G libvirt "$USERNAME"
+	
+	print_progress 'Fix firefox font issue on archlinux'
+	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
 	systemctl enable org.cups.cupsd.service #printer service
 	systemctl enable bluetooth.service #bluetooth service
@@ -476,9 +479,6 @@ ending_script() { # {{
 
 	rm -R /home/"$USERNAME"/yay
 	
-	#print_progress 'Fix firefox font issue on archlinux'
-	#ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
-
 	#Zsh
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
