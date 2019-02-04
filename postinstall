@@ -442,8 +442,8 @@ install_docker() { # {{
 
 ending_script() { # {{
 	
-	print_progress 'Add user to libvirt group'
-	sudo usermod -a -G libvirt "$USERNAME"
+	#print_progress 'Add user to libvirt group'
+	#usermod -a -G libvirt "$USERNAME"
 	
 	print_progress 'Fix firefox font issue on archlinux'
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
