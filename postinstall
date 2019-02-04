@@ -441,9 +441,6 @@ install_docker() { # {{
 # }}}
 
 ending_script() { # {{
-
-	print_progress 'Fix firefox font issue on archlinux'
-	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
 	print_progress 'Add user to libvirt group'
 	sudo usermod -a -G libvirt "$USERNAME"
@@ -457,10 +454,10 @@ ending_script() { # {{
 	install_package 'samba'
 	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
 	mkdir -p /var/lib/samba/usershares
-	groupadd -r sambashare
-	chown root:sambashare /var/lib/samba/usershares
-	chmod 1770 /var/lib/samba/usershares
-	gpasswd -a "$USERNAME" sambashare
+	#groupadd -r sambashare
+	#chown root:sambashare /var/lib/samba/usershares
+	#chmod 1770 /var/lib/samba/usershares
+	#gpasswd -a "$USERNAME" sambashare
 	systemctl enable smb nmb
 	
 	#Grub-btrfs
@@ -478,12 +475,15 @@ ending_script() { # {{
 	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 
 	rm -R /home/"$USERNAME"/yay
+	
+	print_progress 'Fix firefox font issue on archlinux'
+	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 
 	#Zsh
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	su --login "$USERNAME" -c '
-	chsh -s $(which zsh) && setopt -o incappendhistory
+	chsh -s $(which zsh)
 	'
 	
 	enter_to_continue
