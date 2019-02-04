@@ -5,8 +5,27 @@ source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
 source /usr/share/LS_COLORS/dircolors.sh
 autoload -Uz compinit
 
-SAVEHIST=200
+# correction
+setopt correctall
+
+# history
 HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt histignoredups
+setopt extendedhistory
+setopt incappendhistory
+
+# history search & completion
+autoload history-search-end
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+# completion
+autoload -U compinit
+compinit
+zstyle ':completion:*' menu select
+setopt MENU_COMPLETE
 
 # Show OS info when opening a new terminal
 neofetch
