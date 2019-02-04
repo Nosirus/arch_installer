@@ -462,6 +462,7 @@ ending_script() { # {{
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	
 	#Samba
+	install_package 'samba'
 	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
 	mkdir -p /var/lib/samba/usershares
 	groupadd -r sambashare
@@ -470,8 +471,6 @@ ending_script() { # {{
 	gpasswd sambashare -a "$USERNAME"
 	systemctl enable smb nmb
 	
-	rm -r /home/"$USERNAME"/yay
-	
 	#Grub-btrfs
 	print_progress 'Add snapshots (and timeshift snapshots) to grub and exclude docker'
 	install_package 'grub-btrfs'
@@ -479,6 +478,8 @@ ending_script() { # {{
 	grub-mkconfig -o /boot/grub/grub.cfg
 	sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /usr/lib/systemd/system/grub-btrfs.path
 	systemctl enable grub-btrfs.path
+
+	rm -r /home/"$USERNAME"/yay
 
 	#Zsh
 	print_progress 'configure zsh for user'
