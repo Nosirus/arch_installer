@@ -221,6 +221,7 @@ mount_partitions() { # {{{
 	btrfs subvolume create /mnt/_active/tmp
 	btrfs subvolume create /mnt/_snapshots
 	umount /mnt
+	mkdir /mnt/tmp
 	#mount -o noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" /mnt/
 	mount -o subvol=_active/rootvol "$ROOT_PARTITION" /mnt
 	mount -o subvol=_active/tmp "$ROOT_PARTITION" /mnt/tmp
