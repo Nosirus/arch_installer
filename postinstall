@@ -477,6 +477,8 @@ ending_script() { # {{
 	mkdir -p /home/"$USERNAME"/.config/neofetch
 	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 
+	rm -R /home/"$USERNAME"/yay
+
 	#Zsh
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
