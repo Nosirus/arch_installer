@@ -462,6 +462,10 @@ ending_script() { # {{
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	
 	#Samba
+	mkdir -p /var/lib/samba/usershares
+	groupadd -r sambashare
+	chown root:sambashare /var/lib/samba/usershares
+	chmod 1770 /var/lib/samba/usershares
 	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
 	systemctl enable smb nmb
 	
