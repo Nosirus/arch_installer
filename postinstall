@@ -442,7 +442,7 @@ install_docker() { # {{
 
 ending_script() { # {{
 	
-	"print_progress 'Add user to libvirt group'
+	"print_progress 'Add user to libvirt group'"
 	#sudo usermod -a -G libvirt "$USERNAME"
 	
 	systemctl enable org.cups.cupsd.service #printer service
