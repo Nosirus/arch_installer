@@ -481,8 +481,7 @@ ending_script() { # {{
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	su --login "$USERNAME" -c '
-	chsh -s $(which zsh)
-	setopt -o incappendhistory
+	chsh -s $(which zsh) && setopt -o incappendhistory
 	'
 	
 	enter_to_continue
@@ -517,7 +516,7 @@ install() { # {{{
 		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
 		echo "    9. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
 		echo "   10. $(mainmenu_item "${checklist[9]}"  'Ending script')"
-		echo "   11. $(mainmenu_item "${checklist[10]}"  'Finish')"
+		echo "   11. $(mainmenu_item "${checklist[10]}" 'Finish')"
 		echo
 
 		read -p "Enter option (1-10): " OPTION
