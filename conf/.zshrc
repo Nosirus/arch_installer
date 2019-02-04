@@ -3,7 +3,6 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
 source /usr/share/LS_COLORS/dircolors.sh
-autoload -Uz compinit
 
 # correction
 setopt correctall
@@ -22,7 +21,7 @@ bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
 # completion
-autoload -U compinit
+autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
 setopt MENU_COMPLETE
