@@ -216,10 +216,10 @@ mount_partitions() { # {{{
 	
 	mount "$ROOT_PARTITION" /mnt
 	#btrfs subvolume create /mnt/@
-	btrfs subvolume create /mnt_active
-	btrfs subvolume create /mnt_active/rootvol
-	btrfs subvolume create /mnt_active/tmp
-	btrfs subvolume create /mnt_snapshots
+	btrfs subvolume create /mnt/_active
+	btrfs subvolume create /mnt/_active/rootvol
+	btrfs subvolume create /mnt/_active/tmp
+	btrfs subvolume create /mnt/_snapshots
 	umount /mnt
 	#mount -o noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" /mnt/
 	mount -o subvol=_active/rootvol "$ROOT_PARTITION" /mnt
