@@ -468,7 +468,7 @@ ending_script() { # {{
 	groupadd -r sambashare
 	chown root:sambashare /var/lib/samba/usershares
 	chmod 1770 /var/lib/samba/usershares
-	gpasswd sambashare -a "$USERNAME"
+	gpasswd -a "$USERNAME" sambashare
 	systemctl enable smb nmb
 	
 	#Grub-btrfs
