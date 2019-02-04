@@ -433,7 +433,7 @@ install_docker() { # {{
 	systemctl enable docker
 	systemctl start docker
 	
-	docker run -d --name Portainer --restart always -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/nosirus/Docker/Portainer:/data portainer/portainer
+	docker run -d --name Portainer --restart always -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/"$USERNAME"/Docker/Portainer:/data portainer/portainer
 	#docker run -d --name Emby --restart always -p 8096:8096 -p 8920:8920 -p 1900:1900/udp -p 7359:7359/udp -v /home/nosirus/Docker/Emby:/config -v /home/nosirus/Films:/mnt/ -e UID=1000 -e GID=985 emby/embyserver:latest
 	
 	enter_to_continue
@@ -441,8 +441,7 @@ install_docker() { # {{
 # }}}
 
 ending_script() { # {{
-	print_progress 'Install user scripts'
-		
+
 	print_progress 'Fix firefox font issue on archlinux'
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
@@ -453,13 +452,6 @@ ending_script() { # {{
 	systemctl enable bluetooth.service #bluetooth service
 	systemctl enable libvirtd #virtual manager service
 	systemctl enable cronie
-	
-	#Neofetch
-	mkdir -p /home/"$USERNAME"/.config/neofetch
-	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
-	
-	#Zsh
-	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	
 	#Samba
 	install_package 'samba'
@@ -472,18 +464,22 @@ ending_script() { # {{
 	systemctl enable smb nmb
 	
 	#Grub-btrfs
-	print_progress 'Add snapshots timeshift to grub and exclude docker'
+	print_progress 'Install Timeshift and add snapshots to grub and exclude docker'
 	install_package 'grub-btrfs'
+	install_package 'timeshift'
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
-	mkdir /mnt/timeshift/backup/timeshift-btrfs/snapshots
+	mkdir -p /mnt/timeshift/backup/timeshift-btrfs/snapshots
 	sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /usr/lib/systemd/system/grub-btrfs.path
-	systemctl enable grub-btrfs.path
+	systemctl daemon-reload && systemctl enable grub-btrfs.path
 
-	rm -r /home/"$USERNAME"/yay
+	#Neofetch
+	mkdir -p /home/"$USERNAME"/.config/neofetch
+	cp /root/arch_installer/conf/neofetch/config.conf /home/"$USERNAME"/.config/neofetch/config.conf
 
 	#Zsh
 	print_progress 'configure zsh for user'
+	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
 	su --login "$USERNAME" -c '
 	chsh -s $(which zsh)
 	setopt -o incappendhistory
