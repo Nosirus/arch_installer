@@ -454,14 +454,14 @@ ending_script() { # {{
 	#systemctl enable cronie
 	
 	#Samba
-	#install_package 'samba'
-	#cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
-	#mkdir -p /var/lib/samba/usershares
-	#groupadd -r sambashare
-	#chown root:sambashare /var/lib/samba/usershares
-	#chmod 1770 /var/lib/samba/usershares
-	#gpasswd -a "$USERNAME" sambashare
-	#systemctl enable smb nmb
+	install_package 'samba'
+	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
+	mkdir -p /var/lib/samba/usershares
+	groupadd -r sambashare
+	chown root:sambashare /var/lib/samba/usershares
+	chmod 1770 /var/lib/samba/usershares
+	gpasswd -a "$USERNAME" sambashare
+	systemctl enable smb nmb
 	
 	#Grub-btrfs
 	print_progress 'Install Timeshift and add snapshots to grub and exclude docker'
