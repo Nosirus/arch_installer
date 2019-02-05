@@ -15,7 +15,7 @@ firefox
 #thunderbird
 
 # bluetooth
-#bluez bluez-utils pulseaudio-bluetooth
+bluez bluez-utils pulseaudio-bluetooth
 
 # audio
 pulseaudio pulseaudio-alsa
