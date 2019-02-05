@@ -2,7 +2,6 @@
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
-#source /usr/share/LS_COLORS/dircolors.sh
 
 # correction
 setopt correctall
@@ -15,6 +14,9 @@ setopt histignoredups
 setopt extendedhistory
 setopt incappendhistory
 
+setopt autocd extendedglob
+unsetopt beep
+
 # history search & completion
 autoload history-search-end
 bindkey "^[[A" history-search-backward
@@ -23,8 +25,12 @@ bindkey "^[[B" history-search-forward
 # completion
 autoload -Uz compinit
 compinit
+
+# completion
 zstyle ':completion:*' menu select
-setopt MENU_COMPLETE
+zmodload zsh/complist
+# insert completion on first tab even if ambiguous
+setopt menu_complete
 
 # Show OS info when opening a new terminal
 neofetch
