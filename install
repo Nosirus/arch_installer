@@ -193,8 +193,7 @@ format_partitions() { # {{{
 		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
-			#yes | mkfs.xfs "$HOME_PARTITION"
-			yes | mkfs.btrfs "$HOME_PARTITION"
+			yes | mkfs.xfs "$HOME_PARTITION"
 			fsck "$HOME_PARTITION"
 		fi
 
@@ -215,12 +214,7 @@ mount_partitions() { # {{{
 	mount -o noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 
 	mkdir -p "$MOUNTPOINT/home"
-	btrfs subvolume create "$MOUNTPOINT/@home"
-	mount -o noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" "$MOUNTPOINT/home"
-
-
-	#mkdir -p "$MOUNTPOINT/home"
-	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
+	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
 	mkdir -p "$MOUNTPOINT/boot/efi"
 	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot/efi"
