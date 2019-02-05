@@ -454,19 +454,19 @@ ending_script() { # {{
 	systemctl enable cronie
 	
 	#Samba
-	install_package 'samba'
-	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
-	mkdir -p /var/lib/samba/usershares
-	groupadd -r sambashare
-	chown root:sambashare /var/lib/samba/usershares
-	chmod 1770 /var/lib/samba/usershares
-	gpasswd -a "$USERNAME" sambashare
-	systemctl enable smb nmb
+	#install_package 'samba'
+	#cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
+	#mkdir -p /var/lib/samba/usershares
+	#groupadd -r sambashare
+	#chown root:sambashare /var/lib/samba/usershares
+	#chmod 1770 /var/lib/samba/usershares
+	#gpasswd -a "$USERNAME" sambashare
+	#systemctl enable smb nmb
 	
 	#Grub-btrfs
 	print_progress 'Install Timeshift and add snapshots to grub and exclude docker'
 	install_package 'grub-btrfs'
-	install_package 'timeshift'
+	install_aur_package 'timeshift'
 	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
 	mkdir -p /mnt/timeshift/backup/timeshift-btrfs/snapshots
