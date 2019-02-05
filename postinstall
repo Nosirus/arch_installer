@@ -395,7 +395,7 @@ setup_dotfiles() { # {{{
 install_fonts() { # {{{
 	print_progress 'Install some nice fonts'
 
-	install_aur_package 'ttf-material-icons'
+	#install_aur_package 'ttf-material-icons'
 	install_package 'ttf-inconsolata ttf-roboto ttf-font-awesome'
 
 	enter_to_continue
@@ -451,7 +451,7 @@ ending_script() { # {{
 	systemctl enable org.cups.cupsd.service #printer service
 	systemctl enable bluetooth.service #bluetooth service
 	systemctl enable libvirtd #virtual manager service
-	systemctl enable cronie
+	#systemctl enable cronie
 	
 	#Samba
 	#install_package 'samba'
