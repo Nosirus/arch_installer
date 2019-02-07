@@ -217,7 +217,7 @@ mount_partitions() { # {{{
 	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 	
 	
-	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" "$MOUNTPOINT/home"
+	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" /home
 	#mkdir -p "$MOUNTPOINT/home"
 	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
