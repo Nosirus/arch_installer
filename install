@@ -213,10 +213,10 @@ mount_partitions() { # {{{
 	btrfs subvolume create "$MOUNTPOINT/@"
 	btrfs subvolume create "$MOUNTPOINT/@home"
 	umount "$MOUNTPOINT"
-	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT/@"
+	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 	
-	#mkdir -p "$MOUNTPOINT/home"
-	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" /home
+	mkdir -p "$MOUNTPOINT/home"
+	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" "$MOUNTPOINT/home"
 	#mkdir -p "$MOUNTPOINT/home"
 	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
