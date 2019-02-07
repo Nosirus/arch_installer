@@ -216,7 +216,7 @@ mount_partitions() { # {{{
 	
 	btrfs subvolume create @home
 	mkdir -p home
-	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" "$MOUNTPOINT"
+	mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" "$MOUNTPOINT/home"
 	#mkdir -p "$MOUNTPOINT/home"
 	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
