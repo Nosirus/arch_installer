@@ -193,7 +193,8 @@ format_partitions() { # {{{
 		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
-			yes | mkfs.xfs "$HOME_PARTITION"
+			#yes | mkfs.xfs "$HOME_PARTITION"
+			yes | mkfs.btrfs -L "Home" "$HOME_PARTITION"
 			fsck "$HOME_PARTITION"
 		fi
 
