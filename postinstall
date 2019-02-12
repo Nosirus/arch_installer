@@ -479,6 +479,8 @@ ending_script() { # {{
 
 	rm -R /home/"$USERNAME"/yay
 	
+	setxkbmap fr
+	
 	#Zsh
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
