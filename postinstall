@@ -479,7 +479,7 @@ ending_script() { # {{
 
 	rm -R /home/"$USERNAME"/yay
 	
-	setxkbmap fr
+	localectl set-x11-keymap fr
 	
 	#Zsh
 	print_progress 'configure zsh for user'
