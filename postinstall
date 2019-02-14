@@ -396,7 +396,7 @@ install_fonts() { # {{{
 	print_progress 'Install some nice fonts'
 
 	#install_aur_package 'ttf-material-icons'
-	install_package 'ttf-inconsolata ttf-roboto ttf-font-awesome'
+	install_package 'ttf-inconsolata ttf-roboto ttf-font-awesome ttf-dejavu ttf-liberation'
 
 	enter_to_continue
 }
