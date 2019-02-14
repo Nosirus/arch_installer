@@ -63,6 +63,7 @@ zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosugge
 #mediainfo-gui
 #conky conky-manager
 gst-plugins-{base,good,bad,ugly} gst-libav
+foomatic-{db,db-ppds,db-gutenprint-ppds,db-nonfree,db-nonfree-ppds} gutenprint
 notepadqq
 #qbittorrent
 #htop
