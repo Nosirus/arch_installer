@@ -448,11 +448,6 @@ ending_script() { # {{
 	print_progress 'Fix firefox font issue on archlinux'
 	ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/
 	
-	systemctl enable org.cups.cupsd.service #printer service
-	systemctl enable bluetooth.service #bluetooth service
-	systemctl enable libvirtd #virtual manager service
-	#systemctl enable cronie
-	
 	#Samba
 	install_package 'samba'
 	cp /root/arch_installer/conf/smb.conf /etc/samba/smb.conf
@@ -479,7 +474,10 @@ ending_script() { # {{
 
 	rm -R /home/"$USERNAME"/yay
 	
-	localectl set-x11-keymap fr
+	systemctl enable org.cups.cupsd.service #printer service
+	systemctl enable bluetooth.service #bluetooth service
+	systemctl enable libvirtd #virtual manager service
+	systemctl enable cronie
 	
 	#Zsh
 	print_progress 'configure zsh for user'
