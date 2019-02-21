@@ -300,6 +300,7 @@ install_display_manager() { # {{{
 	sed -i 's/Current=/Current=breeze/' /etc/sddm.conf
 	sed -i 's/CursorTheme=/CursorTheme=breeze_cursors/' /etc/sddm.conf
 	sed -i 's/Numlock=none/Numlock=on/' /etc/sddm.conf
+	sed -i 's/User=/User="$USERNAME"/' /etc/sddm.conf
 }
 # }}}
 
