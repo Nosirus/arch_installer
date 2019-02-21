@@ -210,19 +210,16 @@ mount_partitions() { # {{{
 	print_progress 'Mounting partitions..'
 	
 	pvcreate "$DEVICE"
-	vgcreate arch "$DEVICE"
-	lvcreate -L 20-n root arch
-	lvcreate -l100%FREE -n home arch
+	vgcreate lvm "$DEVICE"
+	lvcreate -C y -L 4G -n swap lvm
+	lvcreate -L 20-n root lvm
+	lvcreate -l100%FREE -n home lvm
 
 	mount "$ROOT_PARTITION" "$MOUNTPOINT"
 	btrfs subvolume create "$MOUNTPOINT/@"
-	#btrfs subvolume create "$MOUNTPOINT/@home"
-	#mkdir -p "$MOUNTPOINT/home"
 	umount "$MOUNTPOINT"
 	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 	
-	
-	#mount -o rw,noatime,compress=lzo,space_cache,subvol=@home "$HOME_PARTITION" /home
 	mkdir -p "$MOUNTPOINT/home"
 	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
