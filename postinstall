@@ -301,6 +301,9 @@ install_display_manager() { # {{{
 	sed -i 's/CursorTheme=/CursorTheme=breeze_cursors/' /etc/sddm.conf
 	sed -i 's/Numlock=none/Numlock=on/' /etc/sddm.conf
 	sed -i 's/User=/User="$USERNAME"/' /etc/sddm.conf
+	sed -i 's/Session=/Session=plasma.desktop/' /etc/sddm.conf
+	
+	sed -i "s/^User=/$USERNAME/" /etc/sddm.conf
 }
 # }}}
 
