@@ -34,7 +34,7 @@ check_firmware() { # {{{
 install_requirements() { # {{{
 	print_progress 'Install script dependencies'
 	
-	sed -i 's/#Color/Color\nILoveCandy/g' /etc/pacman.conf #add color & ILoveCandy
+	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color & ILoveCandy
 	
 	setup_console_font
 
