@@ -189,7 +189,7 @@ format_partitions() { # {{{
 			fsck "$BOOT_PARTITION"
 		fi
 
-		yes | mkfs.btrfs "$ROOT_PARTITION"
+		yes | mkfs.btrfs -L Arch Linux "$ROOT_PARTITION"
 		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
@@ -208,6 +208,8 @@ format_partitions() { # {{{
 # }}}
 mount_partitions() { # {{{
 	print_progress 'Mounting partitions..'
+	
+	#pvcreate "$DEVICE"
 
 	mount "$ROOT_PARTITION" "$MOUNTPOINT"
 	btrfs subvolume create "$MOUNTPOINT/@"
