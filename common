@@ -36,7 +36,7 @@ SUBZONE='Paris'
 HARDWARE_CLOCK='UTC'
 # }}}
 # KEYMAP {{{
-KEYMAP='fr'
+KEYMAP='fr-latin9'
 # }}}
 # HOSTNAME {{{
 HOSTNAME='nosirusPC'
