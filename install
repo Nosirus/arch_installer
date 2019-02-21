@@ -209,7 +209,10 @@ format_partitions() { # {{{
 mount_partitions() { # {{{
 	print_progress 'Mounting partitions..'
 	
-	#pvcreate "$DEVICE"
+	pvcreate "$DEVICE"
+	vgcreate arch "$DEVICE"
+	lvcreate -L 20-n root arch
+	lvcreate -l100%FREE -n home arch
 
 	mount "$ROOT_PARTITION" "$MOUNTPOINT"
 	btrfs subvolume create "$MOUNTPOINT/@"
