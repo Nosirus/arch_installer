@@ -481,8 +481,7 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	systemctl enable cronie
 	
-	echo "KEYMAP=fr-latin9" > /etc/vconsole.conf
-	localectl set-x11-keymap fr-latin9
+	#localectl set-x11-keymap fr-latin9
 	
 	#Zsh
 	print_progress 'configure zsh for user'
