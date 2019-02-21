@@ -480,13 +480,6 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	systemctl enable cronie
 	
-	sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /etc/sddm.conf.d/autologin.conf
-	echo "export DESKTOP_LOCKED=yes" >> /etc/sddm.conf.d/autologin.conf
-	
-	[Autologin]
-User=jean
-Session=plasma.desktop
-	
 	echo "KEYMAP=fr-latin9" > /etc/vconsole.conf
 	localectl set-x11-keymap fr-latin9
 	
