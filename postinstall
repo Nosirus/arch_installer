@@ -479,6 +479,8 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	systemctl enable cronie
 	
+	echo "KEYMAP=fr-latin9" > /etc/vconsole.conf
+	
 	#Zsh
 	print_progress 'configure zsh for user'
 	cp /root/arch_installer/conf/.zshrc /home/"$USERNAME"/.zshrc
