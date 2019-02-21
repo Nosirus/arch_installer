@@ -74,7 +74,7 @@ configure_sudo() { # {{{
 install_requirements() { # {{{
 	print_progress 'Install script dependencies'
 	
-	sed -i 's/#Color/Color\nILoveCandy/g' /etc/pacman.conf #add color & ILoveCandy
+	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
 	
 	setup_console_font
 
