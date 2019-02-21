@@ -461,12 +461,12 @@ ending_script() { # {{
 	#Grub-btrfs
 	print_progress 'Install Timeshift and add snapshots to grub and exclude docker'
 	install_package 'grub-btrfs'
-	install_aur_package 'timeshift'
-	echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
-	grub-mkconfig -o /boot/grub/grub.cfg
-	mkdir -p /mnt/timeshift/backup/timeshift-btrfs/snapshots
-	sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /usr/lib/systemd/system/grub-btrfs.path
-	systemctl daemon-reload && systemctl enable grub-btrfs.path
+	#install_aur_package 'timeshift'
+	#echo "GRUB_BTRFS_IGNORE_SPECIFIC_PATH=("var/lib/docker")" >> /etc/default/grub
+	#grub-mkconfig -o /boot/grub/grub.cfg
+	#mkdir -p /mnt/timeshift/backup/timeshift-btrfs/snapshots
+	#sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /usr/lib/systemd/system/grub-btrfs.path
+	#systemctl daemon-reload && systemctl enable grub-btrfs.path
 
 	#Neofetch
 	mkdir -p /home/"$USERNAME"/.config/neofetch
@@ -479,7 +479,15 @@ ending_script() { # {{
 	systemctl enable libvirtd #virtual manager service
 	systemctl enable cronie
 	
+	sed -i '/\.snapshots/a PathModified=/mnt/timeshift/backup/timeshift-btrfs/snapshots' /etc/sddm.conf.d/autologin.conf
+	echo "export DESKTOP_LOCKED=yes" >> /etc/sddm.conf.d/autologin.conf
+	
+	[Autologin]
+User=jean
+Session=plasma.desktop
+	
 	echo "KEYMAP=fr-latin9" > /etc/vconsole.conf
+	localectl set-x11-keymap fr-latin9
 	
 	#Zsh
 	print_progress 'configure zsh for user'
