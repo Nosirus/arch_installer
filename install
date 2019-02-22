@@ -38,8 +38,7 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
-	pacman -S 'git'
-	pacman -S 'aria2'
+	pacman -S --noconfirm git aria2
 	git clone https://github.com/joeky888/app-fast
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
