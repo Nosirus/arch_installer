@@ -43,6 +43,11 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
+	
+	install_package 'git'
+	git clone https://github.com/joeky888/app-fast
+	cp /app-fast/app-fast /usr/bin/app-fast
+	chmod +x /usr/bin/app-fast
 }
 # }}}
 pre_install() { # {{{
