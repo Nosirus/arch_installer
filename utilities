@@ -182,6 +182,11 @@ read_packages() { # {{{
 install_package() { # {{{
 	pacman -S --noconfirm --needed $@ # install if not exists
 }
+
+install_package2() { # {{{
+	app-fast -S --noconfirm --needed $@ # install if not exists
+}
+
 # }}}
 install_aur_package() { # {{{
 	local packages="$1"
