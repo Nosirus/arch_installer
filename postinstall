@@ -77,6 +77,9 @@ install_requirements() { # {{{
 	sed -i 's/#Color/Color/g' /etc/pacman.conf #add color
 	
 	setup_console_font
+	
+	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
+	chmod +x /usr/bin/app-fast
 
 	install_package 'git'
 
