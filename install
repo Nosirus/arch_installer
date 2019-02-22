@@ -38,16 +38,17 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
+	pacman -S 'git aria2'
+	git clone https://github.com/joeky888/app-fast
+	cp /app-fast/app-fast /usr/bin/app-fast
+	chmod +x /usr/bin/app-fast
+
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
 	# option filter
 	install_package 'fzf'
-	
-	install_package 'git'
-	git clone https://github.com/joeky888/app-fast
-	cp /app-fast/app-fast /usr/bin/app-fast
-	chmod +x /usr/bin/app-fast
+
 }
 # }}}
 pre_install() { # {{{
