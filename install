@@ -38,9 +38,10 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
-	pacman -S 'git aria2'
+	pacman -S 'git'
+	pacman -S 'aria2'
 	git clone https://github.com/joeky888/app-fast
-	cp /app-fast/app-fast /usr/bin/app-fast
+	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
 
 	# install figlet to draw big ascii title
