@@ -191,12 +191,15 @@ install_aur_helper() { # {{{
 		echo
 		print_progress 'Install yay..'
 		install_package 'go'
+		
+		cp /root/arch_installer/conf/makepkg.conf /etc/makepkg.conf
 
 		su --login "$USERNAME" -c '
 		
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
 		makepkg -si
+		rm -R yay
 		'
 	else
 		print_warning 'yay has already been installed'
