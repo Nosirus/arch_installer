@@ -183,7 +183,7 @@ install_package() { # {{{
 	pacman -S --noconfirm --needed $@ # install if not exists
 }
 
-install_package2() { # {{{
+app-fast() { # {{{
 	app-fast -S --noconfirm --needed $@ # install if not exists
 }
 
