@@ -258,6 +258,9 @@ install_base() { # {{{
 	install_package base base-devel --downloadonly
 
 	pacstrap "$MOUNTPOINT" base base-devel
+	
+	install_package dialog wpa_supplicant --downloadonly
+	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
