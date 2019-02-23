@@ -49,6 +49,7 @@ install_requirements() { # {{{
 	# option filter
 	install_package 'fzf'
 
+	install_package 'python reflector'
 }
 # }}}
 pre_install() { # {{{
@@ -286,7 +287,6 @@ configure_mirrorlist() { # {{{
 			sed -i 's/^#Server/Server/g' "$tmpfile"
 			;;
 		'sort by download speed')
-			install_package 'python reflector'
 			reflector --verbose --connection-timeout 3 --latest 200 --number 40 --sort rate --save "$tmpfile"
 			;;
 		*)
