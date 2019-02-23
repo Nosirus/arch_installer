@@ -258,9 +258,9 @@ install_base() { # {{{
 	#app-fast -r "$MOUNTPOINT" -Syw base base-devel
 	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syw base base-devel
 	#app-fast -Syw base base-devel --changedir "$MOUNTPOINT"/var/cache/pacman/pkg
-	app-fast -Syw base base-devel --cachedir="$MOUNTPOINT"/var/cache/pacman/pkg
+	app-fast -Syw base base-devel --cachedir="$MOUNTPOINT"/var/cache/pacman/pkg --downloadonly
 	#--changedir
-	pacstrap "$MOUNTPOINT" base base-devel
+	#pacstrap "$MOUNTPOINT" base base-devel
 	pacstrap -c base base-devel
 	
 	#app-fast --changedir "$MOUNTPOINT"/var/cache/pacman/pkg -Syw dialog wpa_supplicant
