@@ -42,7 +42,7 @@ install_requirements() { # {{{
 	git clone https://github.com/Nosirus/app-fast
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
-
+	
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
@@ -255,13 +255,13 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	app-fast -Syw base base-devel
+	#app-fast -Syw base base-devel
 
-	pacstrap "$MOUNTPOINT" base base-devel
+	app-fast pacstrap "$MOUNTPOINT" base base-devel
 	
-	app-fast -Syw dialog wpa_supplicant
+	#app-fast -Syw dialog wpa_supplicant
 	
-	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+	app-fast pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
 	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
