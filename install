@@ -260,7 +260,6 @@ install_base() { # {{{
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
 	app-fast -Syw base base-devel
-	EOF
 	
 	pacstrap "$MOUNTPOINT" base base-devel
 	
