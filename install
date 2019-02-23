@@ -260,11 +260,11 @@ install_base() { # {{{
 	#app-fast -Syw base base-devel --changedir "$MOUNTPOINT"/var/cache/pacman/pkg
 	#mount -o remount,size=4G,noatime /tmp
 	
-	arch_chroot "$MOUNTPOINT" "pacman -S --noconfirm git aria2"
-	arch_chroot "$MOUNTPOINT" "git clone https://github.com/Nosirus/app-fast"
-	arch_chroot "$MOUNTPOINT" "cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast"
-	arch_chroot "$MOUNTPOINT" "chmod +x /usr/bin/app-fast"
-	arch_chroot "$MOUNTPOINT" "app-fast -Syw base base-devel --downloadonly"
+	arch_chroot "$MOUNTPOINT" pacman -S --noconfirm git aria2
+	arch_chroot "$MOUNTPOINT" git clone https://github.com/Nosirus/app-fast
+	arch_chroot "$MOUNTPOINT" cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
+	arch_chroot "$MOUNTPOINT" chmod +x /usr/bin/app-fast
+	arch_chroot "$MOUNTPOINT" app-fast -Syw base base-devel --downloadonly
 		
 	#app-fast -Syw base base-devel --cachedir="$MOUNTPOINT" --downloadonly
 	#--changedir
