@@ -48,8 +48,6 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
-
-	install_package 'python reflector'
 }
 # }}}
 pre_install() { # {{{
@@ -256,6 +254,7 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
+	arch-chroot "$MOUNTPOINT" app-fast -Syw base base-devel
 	pacstrap "$MOUNTPOINT" base base-devel
 	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
