@@ -254,7 +254,7 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	arch-chroot /mnt /bin/bash <<EOF
+	arch-chroot /mnt /bin/bash
 	pacman -S --noconfirm git aria2
 	git clone https://github.com/Nosirus/app-fast
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
