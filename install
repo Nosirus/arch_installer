@@ -255,7 +255,8 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	pacstrap "$MOUNTPOINT" base #base-devel
+	reflector --verbose --connection-timeout 3 --latest 200 --number 40 --sort rate --save /etc/pacman.d/mirrorlist
+	pacstrap "$MOUNTPOINT" base base-devel
 	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
