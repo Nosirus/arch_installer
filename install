@@ -254,13 +254,12 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	newroot=$1; shift
-	mkdir -m 0755 -p "$newroot"/var/{cache/pacman/pkg,lib/pacman,log} "$newroot"/{dev,run,etc}
-	mkdir -m 1777 -p "$newroot"/tmp
-	mkdir -m 0555 -p "$newroot"/{sys,proc}
+	mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
+	mkdir -m 1777 -p "$MOUNTPOINT"/tmp
+	mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
 	
 	#app-fast -Syw base base-devel --cachedir="$newroot/var/cache/pacman/pkg"
-	app-fast -r "$newroot" -Syw base base-devel
+	app-fast -r "$MOUNTPOINT" -Syw base base-devel
 	#pacstrap "$MOUNTPOINT" base base-devel
 	
 	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
