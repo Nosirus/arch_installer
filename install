@@ -255,13 +255,11 @@ install_base() { # {{{
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
 	arch-chroot "$MOUNTPOINT" /bin/bash <<EOF
-	
 	pacman -S --noconfirm git aria2
 	git clone https://github.com/Nosirus/app-fast
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
 	app-fast -Syw base base-devel
-	
 	EOF
 	
 	pacstrap "$MOUNTPOINT" base base-devel
