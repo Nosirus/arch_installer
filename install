@@ -43,6 +43,9 @@ install_requirements() { # {{{
 	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
 	chmod +x /usr/bin/app-fast
 	
+	sed -i '/pacman glibc/a XferCommand = echo Downloading %u ... && /usr/bin/aria2c --conf-path=/home/nosirus/aria2.conf %u' /etc/pacman.conf
+	cp /root/arch_installer/conf/aria2.conf /home/nosirus/aria2.conf
+	
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
