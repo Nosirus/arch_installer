@@ -258,7 +258,7 @@ install_base() { # {{{
 	#app-fast -r "$MOUNTPOINT" -Syw base base-devel
 	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syw base base-devel
 	#app-fast -Syw base base-devel --changedir "$MOUNTPOINT"/var/cache/pacman/pkg
-	mount -o remount,size=4G,noatime /tmp
+	mount -o remount,size=2G,noatime /airootfs
 	app-fast -Syw base base-devel --cachedir="$MOUNTPOINT" --downloadonly
 	#--changedir
 	#pacstrap "$MOUNTPOINT" base base-devel
