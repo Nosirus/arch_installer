@@ -254,17 +254,19 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 	
-	#DOWNLOADARGS='-c -s16 -k1M -x16 -j16 --file-allocation=falloc'
-	#pacman $@ --print --print-format "%l" | grep -E -o -e "(ht|f)tp[s]?://[^\']+" | tee app-fast.list && aria2c -c $DOWNLOADARGS -i app-fast.list
+	
 
 	mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
 	mkdir -m 1777 -p "$MOUNTPOINT"/tmp
 	mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
 	
+	DOWNLOADARGS='-c -s16 -k1M -x16 -j16 --file-allocation=falloc'
+	pacman $@ --print --print-format "%l" | grep -E -o -e "(ht|f)tp[s]?://[^\']+" | tee app-fast.list && aria2c -c $DOWNLOADARGS -i app-fast.list
+	
 	#app-fast -Syw base base-devel --cachedir="$newroot/var/cache/pacman/pkg"
 	#app-fast -r "$MOUNTPOINT" -Syw base base-devel
 	
-	app-fast --cachedir="$MOUNTPOINT"/var/cache/pacman/pkg --sync --upgrades --downloadonly --noconfirm base base-devel
+	#app-fast --cachedir="$MOUNTPOINT"/var/cache/pacman/pkg --sync --upgrades --downloadonly --noconfirm base base-devel
 	#pacstrap "$MOUNTPOINT" base base-devel
 	
 	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
