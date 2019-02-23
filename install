@@ -255,11 +255,11 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	app-fast -Sw base base-devel
+	app-fast -Syuw base base-devel
 
 	pacstrap "$MOUNTPOINT" base base-devel
 	
-	app-fast -Sw dialog wpa_supplicant
+	app-fast -Syuw dialog wpa_supplicant
 	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
