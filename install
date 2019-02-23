@@ -255,23 +255,8 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	#app-fast -r "$MOUNTPOINT" -Syw base base-devel
-	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syw base base-devel
-	#app-fast -Syw base base-devel --changedir "$MOUNTPOINT"/var/cache/pacman/pkg
-	#mount -o remount,size=4G,noatime /tmp
-	
-	arch_chroot "$MOUNTPOINT" pacman -S --noconfirm git aria2
-	arch_chroot "$MOUNTPOINT" git clone https://github.com/Nosirus/app-fast
-	arch_chroot "$MOUNTPOINT" cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
-	arch_chroot "$MOUNTPOINT" chmod +x /usr/bin/app-fast
-	arch_chroot "$MOUNTPOINT" app-fast -Syw base base-devel --downloadonly
-		
-	#app-fast -Syw base base-devel --cachedir="$MOUNTPOINT" --downloadonly
-	#--changedir
-	#pacstrap "$MOUNTPOINT" base base-devel
 	pacstrap "$MOUNTPOINT" base base-devel
 	
-	#app-fast --changedir "$MOUNTPOINT"/var/cache/pacman/pkg -Syw dialog wpa_supplicant
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
