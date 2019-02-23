@@ -254,16 +254,16 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	arch-chroot /mnt /bin/bash
-	pacman -S --noconfirm git aria2
-	git clone https://github.com/Nosirus/app-fast
-	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
-	chmod +x /usr/bin/app-fast
-	app-fast -Syw base base-devel
+	newroot=$1; shift
+	mkdir -m 0755 -p "$newroot"/var/{cache/pacman/pkg,lib/pacman,log} "$newroot"/{dev,run,etc}
+	mkdir -m 1777 -p "$newroot"/tmp
+	mkdir -m 0555 -p "$newroot"/{sys,proc}
 	
-	pacstrap "$MOUNTPOINT" base base-devel
+	app-fast -Syw base base-devel --cachedir="$newroot/var/cache/pacman/pkg"
+	app-fast -r "$newroot" -Sy "${pacman_args[@]}"
+	#pacstrap "$MOUNTPOINT" base base-devel
 	
-	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
 	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
