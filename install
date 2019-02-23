@@ -245,6 +245,71 @@ setup_partition() { # {{{
 }
 # }}}
 
+set_mirrorlist() { # {{{
+	local mirrorlist_opts
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title "MIRRORLIST"
+
+		print_info 'Packages to be installed must be downloaded from mirror servers, which are defined in /etc/pacman.d/mirrorlist.'
+		print_info 'The higher a mirror is placed in the list, the more priority it is given when downloading a package. You may want to edit the file accordingly, and move the geographically closest mirrors to the top of the list, although other criteria should be taken into account.'
+		print_info 'This file will later be copied to the new system by pacstrap, so it is worth getting right.'
+
+		print_paragraph 'Here you can choose to sort the mirror list by download speed or leave it to default. Sorting the mirror list will take for a while'
+
+		mirrorlist_opts=('default' 'sort by download speed')
+		select opt in "${mirrorlist_opts[@]}"; do
+			if contains_element "${opt}" "${mirrorlist_opts[@]}"; then
+				MIRRORLIST="$opt"
+				break
+			else
+				invalid_option
+			fi
+		done
+		confirm_yes "Confirm mirror list option ($MIRRORLIST)"
+	done
+}
+# }}}
+configure_mirrorlist() { # {{{
+	ask_default_option "$MIRRORLIST" set_mirrorlist
+	update_option 'MIRRORLIST'
+
+	print_progress 'Backing up the original mirrorlist...'
+	mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
+	tmpfile=$(mktemp --suffix=-mirrorlist)
+
+	case "$MIRRORLIST" in
+		'default')
+			# Get latest mirror list and save to tmpfile
+			curl -so "$tmpfile" 'https://www.archlinux.org/mirrorlist/all/'
+			sed -i 's/^#Server/Server/g' "$tmpfile"
+			;;
+		'sort by download speed')
+			install_package 'python reflector'
+			reflector --verbose --connection-timeout 3 --latest 200 --number 40 --sort rate --save "$tmpfile"
+			;;
+		*)
+			invalid_option
+			;;
+	esac
+
+	# replace current mirrorlist file (if new file is non-zero)
+	if [[ -s "$tmpfile" ]]; then
+		mv -i "$tmpfile" /etc/pacman.d/mirrorlist
+		# allow global read access (required for non-root yaourt execution)
+		chmod +r /etc/pacman.d/mirrorlist
+		$EDITOR /etc/pacman.d/mirrorlist
+	else
+		print_warning 'Unable to update'
+	fi
+
+	enter_to_continue
+}
+# }}}
+
+	#cp /etc/pacman.d/mirrorlist "${MOUNTPOINT}/etc/pacman.d/mirrorlist"
+
 install_base() { # {{{
 	print_title 'INSTALL BASE SYSTEM'
 	print_info 'Using the pacstrap script we install the base system. The base-devel package group will be installed also.'
@@ -255,8 +320,6 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	#reflector --verbose --connection-timeout 3 --latest 200 --number 40 --sort rate --save /etc/pacman.d/mirrorlist
-	#cp /etc/pacman.d/mirrorlist "${MOUNTPOINT}/etc/pacman.d/mirrorlist"
 	pacstrap "$MOUNTPOINT" base base-devel
 	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
