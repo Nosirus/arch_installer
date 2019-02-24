@@ -105,7 +105,7 @@ format_partitions() { # {{{
 	local partitions partition_names format_partition_names partition_number
 	
 	partitions=($(lsblk -pl | grep 'part' | awk '{print $1}'))
-	partition_names=(root home swap boot)
+	partition_names=(boot swap root)
 	format_partition_names=(root swap) # always format these partitions
 
 	for partition_name in ${partition_names[@]}; do
