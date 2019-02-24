@@ -38,6 +38,14 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
+	pacman -S --noconfirm git aria2
+	git clone https://github.com/Nosirus/app-fast
+	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
+	chmod +x /usr/bin/app-fast
+	
+	# install figlet to draw big ascii title
+	install_package 'figlet'
+
 	# option filter
 	install_package 'fzf'
 }
@@ -102,7 +110,7 @@ format_partitions() { # {{{
 	local partitions partition_names format_partition_names partition_number
 	
 	partitions=($(lsblk -pl | grep 'part' | awk '{print $1}'))
-	partition_names=(boot lvm)
+	partition_names=(root home swap boot)
 	format_partition_names=(root swap) # always format these partitions
 
 	for partition_name in ${partition_names[@]}; do
@@ -116,11 +124,17 @@ format_partitions() { # {{{
 		select partition in "${partitions[@]}"; do
 			if contains_element "${partition}" "${partitions[@]}"; then
 				case "$partition_name" in
+					root)
+						ROOT_PARTITION="$partition"
+						;;
+					home)
+						HOME_PARTITION="$partition"
+						;;
+					swap)
+						SWAP_PARTITION="$partition"
+						;;
 					boot)
 						BOOT_PARTITION="$partition"
-						;;
-					root)
-						LVM_PARTITION="$partition"
 						;;
 				esac
 
@@ -174,9 +188,6 @@ format_partitions() { # {{{
 		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/boot/efi${RESET}"
 	fi
 
-		pvcreate "$DEVICE"
-		vgcreate lvm "$DEVICE"
-
 	echo
 	confirm 'Confirm formatting partitions'
 	if [[ "$OPTION" == y ]]; then
@@ -184,30 +195,17 @@ format_partitions() { # {{{
 			yes | mkfs.vfat -F32 "$BOOT_PARTITION"
 			fsck "$BOOT_PARTITION"
 		fi
-		
-		if [[ "$FORMAT_ROOT_PARTITION" == 1 ]]; then
-			ask_default_option "$ROOT_SIZE" create_user_account
-			update_option "$ROOT_SIZE"
-			lvcreate -L "$ROOT_SIZE" -n root lvm
-			yes | mkfs.xfs "$ROOT_PARTITION"
-			fsck "$ROOT_PARTITION"
-		fi
-		
-		ask_default_option "$SWAP_SIZE" create_user_account
-		update_option "$SWAP_SIZE"
-		lvcreate -L "$SWAP_SIZE" -n swap lvm
-		yes | mkswap "$SWAP_PARTITION"
 
+		yes | mkfs.btrfs -L Arch "$ROOT_PARTITION"
+		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
-			ask_default_option "$HOME_SIZE" create_user_account
-			update_option "$HOME_SIZE"
-			lvcreate -l "$HOME_SIZE" -n home lvm
 			yes | mkfs.xfs "$HOME_PARTITION"
+			#yes | mkfs.btrfs -L "Home" "$HOME_PARTITION"
 			fsck "$HOME_PARTITION"
 		fi
 
-
+		yes | mkswap "$SWAP_PARTITION"
 		mount_partitions
 	else
 		return
@@ -224,15 +222,13 @@ mount_partitions() { # {{{
 	#lvcreate -L 20-n root lvm
 	#lvcreate -l100%FREE -n home lvm
 
-	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
-	#btrfs subvolume create "$MOUNTPOINT/@"
-	#umount "$MOUNTPOINT"
-	#mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
-	
 	mount "$ROOT_PARTITION" "$MOUNTPOINT"
+	btrfs subvolume create "$MOUNTPOINT/@"
+	umount "$MOUNTPOINT"
+	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 	
-	#mkdir -p "$MOUNTPOINT/home"
-	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
+	mkdir -p "$MOUNTPOINT/home"
+	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
 	mkdir -p "$MOUNTPOINT/boot/efi"
 	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot/efi"
@@ -248,7 +244,295 @@ setup_partition() { # {{{
 }
 # }}}
 
+install_base() { # {{{
+	print_title 'INSTALL BASE SYSTEM'
+	print_info 'Using the pacstrap script we install the base system. The base-devel package group will be installed also.'
 
+	# remove old linux image in case you reinstall arch and have boot partition
+	# shared with window and you do not want to format it, so you have to delete
+	# the old linux image manually
+	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
+	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
+
+	mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
+	mkdir -m 1777 -p "$MOUNTPOINT"/tmp
+	mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
+	mount -o remount,size=1G /run/archiso/cowspace
+	#mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
+	
+	#pacstrap "$MOUNTPOINT" base base-devel
+
+	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+
+	print_progress 'setup network for the new system'
+	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
+
+	enter_to_continue
+}
+# }}}
+generate_fstab() { # {{{
+	print_title 'FSTAB'
+	print_info 'The /etc/fstab file contains static filesystem information. It defines how storage devices and partitions are to be mounted and integrated into the overall system. It is read by the mount command to determine which options to use when mounting a specific partition or partition.'
+
+	echo
+	print_progress 'Generating fstab file...'
+	genfstab -U "$MOUNTPOINT" > "$MOUNTPOINT/etc/fstab"
+	
+	echo
+	print_info "$MOUNTPOINT/etc/fstab"
+	cat ${MOUNTPOINT}/etc/fstab
+
+	enter_to_continue
+}
+# }}}
+
+set_locale() { # {{{
+	local locales
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'LOCALE'
+		print_info 'Locales are used by glibc and other locale-aware programs or libraries for rendering text, correctly displaying regional monetary values, time and date formats, alphabetic idiosyncrasies, and other locale-specific standards.'
+		echo
+
+		locales="$(cat /etc/locale.gen | grep UTF-8 | sed 's/\..*$//' | sed '/@/d' | awk '{print $1}' | uniq | sed 's/#//g')"
+		LOCALE="$(fuzzy_search "$locales" 'Enter locale: ')"
+
+		if [[ "$LOCALE" != '' ]]; then
+			confirm_yes "Confirm locale ($LOCALE)"
+		else
+			invalid_option
+		fi
+	done
+}
+# }}}
+select_locale() { # {{{
+	ask_default_option "$LOCALE" set_locale
+	update_option 'LOCALE'
+
+	local locale_utf8
+	locale_utf8="${LOCALE}.UTF-8"
+
+	echo "LANG=$locale_utf8" > "${MOUNTPOINT}/etc/locale.conf"
+	sed -i '/^[^#]/s/^\(.*\)$/#\1/' "${MOUNTPOINT}/etc/locale.gen" # comment previous option from last run
+	sed -i "s/#\(${locale_utf8}\)/\1/" "${MOUNTPOINT}/etc/locale.gen"
+	arch_chroot 'locale-gen'
+
+	enter_to_continue
+}
+# }}}
+
+set_timezone() { # {{{
+	local zones subzones
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'TIMEZONE'
+		print_info 'Select your timezone'
+
+		zones="$(timedatectl list-timezones | sed 's/\/.*$//' | uniq)"
+		ZONE="$(fuzzy_search "$zones" 'Enter zone: ')"
+
+		if [[ "$ZONE" != '' ]]; then
+			subzones="$(timedatectl list-timezones | grep "$ZONE" | sed 's|^.*\/||')"
+			SUBZONE="$(fuzzy_search "$subzones" 'Enter subzone: ')"
+
+			if [[ "$SUBZONE" != '' ]]; then
+				confirm_yes "Confirm timezone ($ZONE/$SUBZONE)"
+			else
+				invalid_option
+			fi
+		else
+			invalid_option
+		fi
+	done
+}
+# }}}
+select_timezone() { # {{{
+	ask_default_option "$ZONE/$SUBZONE" set_timezone
+	update_option 'ZONE'
+	update_option 'SUBZONE'
+
+	arch_chroot "ln -sf /usr/share/zoneinfo/${ZONE}/${SUBZONE} /etc/localtime"
+	enter_to_continue
+}
+# }}}
+
+set_hardware_clock() { # {{{
+	local hardware_clock_opts
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'HARDWARE CLOCK'
+		print_info 'This is set in /etc/adjtime. Set the hardware clock mode uniformly between your operating systems on the same machine. Otherwise, they will overwrite the time and cause clock shifts (which can cause time drift correction to be miscalibrated).'
+
+		echo "  ${GREEN}Recommended:${RESET} Set both Arch Linux and Windows to use UTC if you dual-boot with Window"
+
+		hardware_clock_opts=('UTC' 'Localtime')
+		select opt in "${hardware_clock_opts[@]}"; do
+			if contains_element "${opt}" "${hardware_clock_opts[@]}"; then
+				HARDWARE_CLOCK="$opt"
+				break
+			else
+				invalid_option
+			fi
+		done
+		confirm_yes "Confirm hardware clock ($HARDWARE_CLOCK)"
+	done
+}
+# }}}
+configure_hardware_clock() { # {{{
+	ask_default_option "$HARDWARE_CLOCK" set_hardware_clock
+	update_option 'HARDWARE_CLOCK'
+
+	case "$HARDWARE_CLOCK" in
+		UTC)
+			arch_chroot 'hwclock --systohc --utc'
+			;;
+		Localtime)
+			arch_chroot 'hwclock --systohc --localtime'
+			;;
+	esac
+	enter_to_continue
+}
+# }}}
+
+set_keymap() { # {{{
+	local keymaps
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'KEYMAP'
+		print_info 'Select your keyboard layout. Default is US'
+
+		keymaps="$(find /usr/share/kbd/keymaps -name '*.map.gz' | sed 's|^.*\/||' | sed 's/\.map\.gz$//')"
+		KEYMAP="$(fuzzy_search "$keymaps" 'Enter layout: ')"
+
+		if [[ "$KEYMAP" != '' ]]; then
+			confirm_yes "Confirm keyboard layout ($KEYMAP)"
+		else
+			invalid_option
+		fi
+	done
+}
+# }}}
+select_keyboard_layout() { # {{{
+	ask_default_option "$KEYMAP" set_keymap
+	update_option 'KEYMAP'
+
+	# loadkeys "$KEYMAP"
+	echo "KEYMAP=$KEYMAP" > ${MOUNTPOINT}/etc/vconsole.conf
+	enter_to_continue
+}
+# }}}
+
+create_hostname() { # {{{
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'HOSTNAME'
+		print_info 'A host name is a unique name created to identify a machine on a network. Host names are restricted to alphanumeric characters. The hyphen (-) can be used, but a host name cannot start or end with it. Length is restricted to 63 characters.'
+
+		echo
+		read_input 'Enter host name: '
+
+		if [[ "$OPTION" != '' ]]; then
+			HOSTNAME="$OPTION"
+			confirm_yes "Confirm host name ($HOSTNAME)"
+		else
+			invalid_option
+		fi
+	done
+}
+# }}}
+configure_hostname() { # {{{
+	ask_default_option "$HOSTNAME" create_hostname
+	update_option 'HOSTNAME'
+
+	echo "$HOSTNAME" > "${MOUNTPOINT}/etc/hostname"
+
+	echo '# <ip-address>   <hostname>           <optional-alias>' >  "${MOUNTPOINT}/etc/hosts"
+	echo '  127.0.0.1      localhost'                             >> "${MOUNTPOINT}/etc/hosts"
+	echo '  ::1            localhost'                             >> "${MOUNTPOINT}/etc/hosts"
+	echo "  127.0.1.1      $HOSTNAME.localhost  $HOSTNAME"        >> "${MOUNTPOINT}/etc/hosts"
+
+	enter_to_continue
+}
+# }}}
+
+create_root_password() { # {{{
+	print_title 'ROOT PASSWORD'
+	print_info 'Create password for root account'
+
+	echo
+	arch_chroot 'passwd'
+	enter_to_continue
+}
+# }}}
+configure_mkinitcpio() { # {{{
+	print_title 'MKINITCPIO'
+	print_info 'mkinitcpio is a Bash script used to create an initial ramdisk environment.'
+	print_info 'Creating a new initramfs is usually not required, because mkinitcpio was run on installation of the linux package with pacstrap.'
+	print_info 'For special configurations, modify the /etc/mkinitcpio.conf file and recreate the initramfs image:'
+	echo -e "\t${GREEN}mkinitcpio -p linux${RESET}"
+
+	echo
+	print_progress 'Create the initramfs image...'
+	arch_chroot 'mkinitcpio -p linux'
+
+	enter_to_continue
+}
+# }}}
+
+setup_bootloader_theme() { # {{{
+	print_progress 'Install theme for grub'
+	#git clone 'https://github.com/NearHuscarl/grub2-themes' /tmp/grub2-themes
+	git clone 'https://github.com/vinceliuice/grub2-themes' /tmp/grub2-themes
+	cp -rd /tmp/grub2-themes/grub-theme-stylishdark/StylishDark "${MOUNTPOINT}/boot/grub/themes"
+	rm -rd /tmp/grub2-themes
+}
+# }}}
+setup_bootloader() { # {{{
+	local boot_id='arch_grub'
+
+	print_title 'BOOTLOADER'
+	print_info 'A Linux-capable boot loader must be installed in order to boot Arch Linux.'
+
+	echo
+	print_progress 'Download necessary files for installation...'
+	# Note: for bios: pacman -Syu grub-bios os-prober
+	pacstrap ${MOUNTPOINT} grub efibootmgr os-prober
+
+	print_progress 'Install grub'
+	# arch_chroot "grub-install $DEVICE"
+	arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=$boot_id --recheck"
+
+	setup_bootloader_theme
+
+	if [[ ! -f "${MOUNTPOINT}/etc/default/grub.aui" ]]; then
+		cp -v "${MOUNTPOINT}/etc/default/grub" "${MOUNTPOINT}/etc/default/grub.aui" 
+
+		# fix the spamming pcie bus error https://askubuntu.com/questions/771899/pcie-bus-error-severity-corrected
+		sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/s/="\(.*\)"/="\1 pci=nomsi"/' "${MOUNTPOINT}/etc/default/grub"
+		sed -i '/GRUB_THEME=/s/^.*/GRUB_THEME="\/boot\/grub\/themes\/StylishDark\/theme.txt"/' "${MOUNTPOINT}/etc/default/grub"
+		#sed -i '/GRUB_GFXMODE/s/="\(.*\)"/="\1 2560x1080,auto"/' "${MOUNTPOINT}/etc/default/grub"
+	fi
+
+	print_progress 'Generate the main configuration file'
+	print_warning 'Remember that grub.cfg has to be re-generated after any change to /etc/default/grub or files in /etc/grub.d/'
+
+	arch_chroot 'grub-mkconfig -o /boot/grub/grub.cfg'
+
+	# fix a bug when install arch in EFI mode with virtualbox
+	# https://wiki.archlinux.org/index.php/VirtualBox#Installation_in_EFI_mode
+	# https://www.youtube.com/watch?v=q87bWzKym5g
+	if is_in_virtualbox; then
+		mkdir "${MOUNTPOINT}/boot/EFI/boot"
+		cp "${MOUNTPOINT}/boot/EFI/$boot_id/grubx64.efi" "${MOUNTPOINT}/boot/EFI/boot/bootx64.efi"
+	fi
+
+	enter_to_continue
+}
+# }}}
 finish() { # {{{
 	print_title "INSTALL COMPLETED"
 
@@ -273,10 +557,20 @@ install() { # {{{
 		print_title 'ARCHLINUX INSTALLER'
 
 		echo "    1. $(mainmenu_item "${checklist[0]}"  'Partition the disks')"
-		echo "    2. $(mainmenu_item "${checklist[1]}" 'Finish')"
+		echo "    2. $(mainmenu_item "${checklist[1]}"  'Install base')"
+		echo "    3. $(mainmenu_item "${checklist[2]}"  'Generate fstab')"
+		echo "    4. $(mainmenu_item "${checklist[3]}"  'Select locale' "$LOCALE")"
+		echo "    5. $(mainmenu_item "${checklist[4]}"  'Select timezone' "$ZONE/$SUBZONE")"
+		echo "    6. $(mainmenu_item "${checklist[5]}"  'Configure hardware clock' "$HARDWARE_CLOCK")"
+		echo "    7. $(mainmenu_item "${checklist[6]}"  'Select keyboard layout' "$KEYMAP")"
+		echo "    8. $(mainmenu_item "${checklist[7]}"  'Configure hostname' "$HOSTNAME")"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Configure root password')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Configure mkinitcpio')"
+		echo "   11. $(mainmenu_item "${checklist[10]}" 'Setup bootloader')"
+		echo "   12. $(mainmenu_item "${checklist[11]}" 'Finish')"
 		echo
 
-		read -p "Enter option (1-2): " OPTION
+		read -p "Enter option (1-12): " OPTION
 
 		case "$OPTION" in
 			1)
@@ -284,6 +578,46 @@ install() { # {{{
 				checklist[0]=1
 				;;
 			2)
+				install_base
+				checklist[1]=1
+				;;
+			3)
+				generate_fstab
+				checklist[2]=1
+				;;
+			4)
+				select_locale
+				checklist[3]=1
+				;;
+			5)
+				select_timezone
+				checklist[4]=1
+				;;
+			6)
+				configure_hardware_clock
+				checklist[5]=1
+				;;
+			7)
+				select_keyboard_layout
+				checklist[6]=1
+				;;
+			8)
+				configure_hostname
+				checklist[7]=1
+				;;
+			9)
+				create_root_password
+				checklist[8]=1
+				;;
+			10)
+				configure_mkinitcpio
+				checklist[9]=1
+				;;
+			11)
+				setup_bootloader
+				checklist[10]=1
+				;;
+			12)
 				finish
 				checklist[11]=1
 				;;
