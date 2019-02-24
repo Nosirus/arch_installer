@@ -503,6 +503,7 @@ finish() { # {{{
 
 	confirm_yes 'Reboot system'
 	if [[ "$OPTION" != n ]]; then
+		rm -R /var/cache/pacman/pkg/*
 		rm -R /home/"$USERNAME"/yay
 		rm -R /root/arch_installer
 		reboot
