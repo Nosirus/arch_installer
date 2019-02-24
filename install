@@ -120,10 +120,7 @@ format_partitions() { # {{{
 						BOOT_PARTITION="$partition"
 						;;
 					root)
-						ROOT_PARTITION="$partition"
-						;;
-					swap)
-						SWAP_PARTITION="$partition"
+						LVM_PARTITION="$partition"
 						;;
 				esac
 
