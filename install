@@ -269,6 +269,7 @@ install_base() { # {{{
 	
 	#pacman -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
 	mount -o remount,size=1G /run/archiso/cowspace
+	#cd "$MOUNTPOINT"
 	app-fast -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
 	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	
