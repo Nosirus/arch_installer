@@ -119,17 +119,14 @@ format_partitions() { # {{{
 		select partition in "${partitions[@]}"; do
 			if contains_element "${partition}" "${partitions[@]}"; then
 				case "$partition_name" in
+					boot)
+						BOOT_PARTITION="$partition"
+						;;
 					root)
 						ROOT_PARTITION="$partition"
 						;;
-					home)
-						HOME_PARTITION="$partition"
-						;;
 					swap)
 						SWAP_PARTITION="$partition"
-						;;
-					boot)
-						BOOT_PARTITION="$partition"
 						;;
 				esac
 
