@@ -268,6 +268,7 @@ install_base() { # {{{
 	#pacstrap "$MOUNTPOINT" base base-devel
 	
 	#pacman -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
+	mount -o remount,size=1G /run/archiso/cowspace
 	app-fast -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
 	
 	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
