@@ -38,9 +38,6 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
-	# install figlet to draw big ascii title
-	install_package 'figlet'
-
 	# option filter
 	install_package 'fzf'
 }
@@ -188,7 +185,7 @@ format_partitions() { # {{{
 			fsck "$BOOT_PARTITION"
 		fi
 
-		yes | mkfs.btrfs -L Arch "$ROOT_PARTITION"
+		yes | mkfs.xfs "$ROOT_PARTITION"
 		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
@@ -214,13 +211,15 @@ mount_partitions() { # {{{
 	#lvcreate -L 20-n root lvm
 	#lvcreate -l100%FREE -n home lvm
 
-	mount "$ROOT_PARTITION" "$MOUNTPOINT"
-	btrfs subvolume create "$MOUNTPOINT/@"
-	umount "$MOUNTPOINT"
-	mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
+	#mount "$ROOT_PARTITION" "$MOUNTPOINT"
+	#btrfs subvolume create "$MOUNTPOINT/@"
+	#umount "$MOUNTPOINT"
+	#mount -o rw,noatime,compress=lzo,space_cache,subvol=@ "$ROOT_PARTITION" "$MOUNTPOINT"
 	
-	mkdir -p "$MOUNTPOINT/home"
-	mount "$HOME_PARTITION" "$MOUNTPOINT/home"
+	mount "$ROOT_PARTITION" "$MOUNTPOINT"
+	
+	#mkdir -p "$MOUNTPOINT/home"
+	#mount "$HOME_PARTITION" "$MOUNTPOINT/home"
 
 	mkdir -p "$MOUNTPOINT/boot/efi"
 	mount "$BOOT_PARTITION" "$MOUNTPOINT/boot/efi"
