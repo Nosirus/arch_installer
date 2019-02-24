@@ -267,7 +267,8 @@ install_base() { # {{{
 	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syuw --noconfirm base base-devel
 	#pacstrap "$MOUNTPOINT" base base-devel
 	
-	pacman -r "$MOUNTPOINT" -Sy base base-devel --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
+	#pacman -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
+	app-fast -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
 	
 	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
