@@ -177,6 +177,9 @@ format_partitions() { # {{{
 		echo "${BLUE}${BOOT_PARTITION}${RESET} ${RED}(vfat)${RESET} will be mounted to ${GREEN}${MOUNTPOINT}/boot/efi${RESET}"
 	fi
 
+		pvcreate "$DEVICE"
+		vgcreate lvm "$DEVICE"
+
 	echo
 	confirm 'Confirm formatting partitions'
 	if [[ "$OPTION" == y ]]; then
@@ -184,17 +187,30 @@ format_partitions() { # {{{
 			yes | mkfs.vfat -F32 "$BOOT_PARTITION"
 			fsck "$BOOT_PARTITION"
 		fi
+		
+		if [[ "$FORMAT_ROOT_PARTITION" == 1 ]]; then
+			ask_default_option "$ROOT_SIZE" create_user_account
+			update_option "$ROOT_SIZE"
+			lvcreate -L "$ROOT_SIZE" -n root lvm
+			yes | mkfs.xfs "$ROOT_PARTITION"
+			fsck "$ROOT_PARTITION"
+		fi
+		
+		ask_default_option "$SWAP_SIZE" create_user_account
+		update_option "$SWAP_SIZE"
+		lvcreate -L "$SWAP_SIZE" -n swap lvm
+		yes | mkswap "$SWAP_PARTITION"
 
-		yes | mkfs.xfs "$ROOT_PARTITION"
-		fsck "$ROOT_PARTITION"
 
 		if [[ "$FORMAT_HOME_PARTITION" == 1 ]]; then
+			ask_default_option "$HOME_SIZE" create_user_account
+			update_option "$HOME_SIZE"
+			lvcreate -l "$HOME_SIZE" -n home lvm
 			yes | mkfs.xfs "$HOME_PARTITION"
-			#yes | mkfs.btrfs -L "Home" "$HOME_PARTITION"
 			fsck "$HOME_PARTITION"
 		fi
 
-		yes | mkswap "$SWAP_PARTITION"
+
 		mount_partitions
 	else
 		return
