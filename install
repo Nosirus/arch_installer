@@ -256,16 +256,16 @@ install_base() { # {{{
 	
 	
 
-	mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
-	mkdir -m 1777 -p "$MOUNTPOINT"/tmp
-	mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
+	#mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
+	#mkdir -m 1777 -p "$MOUNTPOINT"/tmp
+	#mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
 	
 	#DOWNLOADARGS='-c -s16 -k1M -x16 -j16 --file-allocation=falloc' --dir="$MOUNTPOINT/var/cache/pacman/pkg"
 	#pacman $@ base base-devel --print-format "%l" | grep -E -o -e "(ht|f)tp[s]?://[^\']+" | tee app-fast.list && aria2c -c $DOWNLOADARGS -i app-fast.list
 	#cd "$MOUNTPOINT/var/cache/pacman/pkg/"
-	app-fast -Sw base --cachedir=/mnt/var/cache/pacman/pkg --noconfirm #base-devel
+	#app-fast -Sw base --cachedir=/mnt/var/cache/pacman/pkg --noconfirm #base-devel
 	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syuw --noconfirm base base-devel
-	pacstrap "$MOUNTPOINT" base #base-devel
+	pacstrap "$MOUNTPOINT" base base-devel
 	
 	pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
