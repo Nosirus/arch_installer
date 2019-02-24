@@ -253,26 +253,15 @@ install_base() { # {{{
 	# the old linux image manually
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
-	
-	
 
 	mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
 	mkdir -m 1777 -p "$MOUNTPOINT"/tmp
 	mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
-	
-	#DOWNLOADARGS='-c -s16 -k1M -x16 -j16 --file-allocation=falloc' --dir="$MOUNTPOINT/var/cache/pacman/pkg"
-	#pacman $@ base base-devel --print-format "%l" | grep -E -o -e "(ht|f)tp[s]?://[^\']+" | tee app-fast.list && aria2c -c $DOWNLOADARGS -i app-fast.list
-	#cd "$MOUNTPOINT"
-	#app-fast -Sw base --cachedir=/mnt/var/cache/pacman/pkg --noconfirm #base-devel
-	#app-fast -r "$MOUNTPOINT"/var/cache/pacman/pkg -Syuw --noconfirm base base-devel
-	#pacstrap "$MOUNTPOINT" base base-devel
-	
-	#pacman -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
 	mount -o remount,size=1G /run/archiso/cowspace
-	#cd "$MOUNTPOINT"
-	app-fast -r "$MOUNTPOINT" -Sy base base-devel --noconfirm --cachedir="$MOUNTPOINT/var/cache/pacman/pkg"
-	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
+	#mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	
+	#pacstrap "$MOUNTPOINT" base base-devel
+
 	#pacstrap "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
