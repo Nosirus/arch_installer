@@ -262,14 +262,14 @@ install_base() { # {{{
 	mount -o remount,size=1G /run/archiso/cowspace
 	sed -i '116,118 s/^/#/' /usr/bin/app-fast
 	app-fast -Sy base base-devel
-	#mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
+	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	#sed -i '116,118 s/^#//' /usr/bin/app-fast
 	
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
 	#sed -i '116,118 s/^/#/' /usr/bin/app-fast
 	app-fast -Sy dialog wpa_supplicant
-	#mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
+	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	sed -i '116,118 s/^#//' /usr/bin/app-fast
 
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
