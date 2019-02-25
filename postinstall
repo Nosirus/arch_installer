@@ -587,15 +587,15 @@ install() { # {{{
 				;;	
 			10)	
 				install_docker
-				checklist[8]=1
+				checklist[9]=1
 				;;
 			11)	
 				ending_script
-				checklist[9]=1
+				checklist[10]=1
 				;;
 			12)
 				finish
-				checklist[10]=1
+				checklist[11]=1
 				;;
 			*)
 				invalid_option
