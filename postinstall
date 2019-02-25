@@ -540,12 +540,10 @@ install() { # {{{
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
 		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
-		
-		install_zram
-		echo "    9. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
-		echo "   1. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
-		echo "   10. $(mainmenu_item "${checklist[9]}"  'Ending script')"
-		echo "   11. $(mainmenu_item "${checklist[10]}" 'Finish')"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Install Zram')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Docker & Portainer')"
+		echo "   11. $(mainmenu_item "${checklist[10]}" 'Ending script')"
+		echo "   12. $(mainmenu_item "${checklist[11]}" 'Finish')"
 		echo
 
 		read -p "Enter option (1-10): " OPTION
@@ -584,14 +582,18 @@ install() { # {{{
 				checklist[7]=1
 				;;
 			9)	
+				install_zram
+				checklist[8]=1
+				;;	
+			10)	
 				install_docker
 				checklist[8]=1
 				;;
-			10)	
+			11)	
 				ending_script
 				checklist[9]=1
 				;;
-			11)
+			12)
 				finish
 				checklist[10]=1
 				;;
