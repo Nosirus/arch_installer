@@ -431,6 +431,19 @@ install_translation() { # {{{
 }
 # }}}
 
+#ZRAM {{{
+install_zram (){
+  print_title "ZRAM - https://wiki.archlinux.org/index.php/Maximizing_Performance"
+  print_info "Zram creates a device in RAM and compresses it. If you use for swap means that part of the RAM can hold much more information but uses more CPU. Still, it is much quicker than swapping to a hard drive. If a system often falls back to swap, this could improve responsiveness. Zram is in mainline staging (therefore its not stable yet, use with caution)."
+  read_input_text "Install Zram" $ZRAM
+  if [[ $OPTION == y ]]; then
+    install_aur_package "zramswap"
+    system_ctl enable zramswap
+    pause_function
+  fi
+}
+#}}}
+
 install_docker() { # {{
 	print_progress 'Install Docker & Portainer'
 	install_package 'docker'
@@ -527,7 +540,10 @@ install() { # {{{
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
 		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
+		
+		install_zram
 		echo "    9. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
+		echo "   1. $(mainmenu_item "${checklist[8]}"  'Docker & Portainer')"
 		echo "   10. $(mainmenu_item "${checklist[9]}"  'Ending script')"
 		echo "   11. $(mainmenu_item "${checklist[10]}" 'Finish')"
 		echo
