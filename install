@@ -261,14 +261,14 @@ install_base() { # {{{
 	mkdir -m 0755 -p "$MOUNTPOINT/var/cache/pacman/pkg"
 	mount -o remount,size=1G /run/archiso/cowspace
 	sed -i '116,118 s/^/#/' /usr/bin/app-fast
-	app-fast base base-devel
+	app-fast -Sy base base-devel
 	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	#sed -i '116,118 s/^#//' /usr/bin/app-fast
 	
 	pacstrap "$MOUNTPOINT" base base-devel
 
 	#sed -i '116,118 s/^/#/' /usr/bin/app-fast
-	app-fast base base-devel
+	app-fast -Sy dialog wpa_supplicant
 	mv /var/cache/pacman/pkg/* "$MOUNTPOINT/var/cache/pacman/pkg"
 	sed -i '116,118 s/^#//' /usr/bin/app-fast
 
