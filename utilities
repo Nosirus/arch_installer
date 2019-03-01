@@ -181,7 +181,7 @@ read_packages() { # {{{
 # }}}
 install_package() { # {{{
 	#pacman -S --noconfirm --needed $@ # install if not exists
-	app-fast -S --noconfirm --needed $@ # install if not exists
+	pacfast -S --noconfirm --needed $@ # install if not exists
 }
 
 # }}}
