@@ -38,7 +38,7 @@ install_requirements() { # {{{
 	
 	setup_console_font
 
-	#pacman -S --noconfirm git aria2
+	pacman -S --noconfirm git aria2
 	git clone https://github.com/Nosirus/PacFast
 	cp /root/arch_installer/PacFast/pacfast /usr/bin/pacfast
 	chmod +x /usr/bin/pacfast
