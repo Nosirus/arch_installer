@@ -78,8 +78,8 @@ install_requirements() { # {{{
 	
 	setup_console_font
 	
-	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
-	chmod +x /usr/bin/app-fast
+	cp /root/arch_installer/PacFast/pacfast /usr/bin/pacfast
+	chmod +x /usr/bin/pacfast
 
 	install_package 'git'
 
