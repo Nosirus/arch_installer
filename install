@@ -41,7 +41,7 @@ install_requirements() { # {{{
 	#pacman -S --noconfirm git aria2
 	git clone https://github.com/Nosirus/PacFast
 	cp /root/arch_installer/PacFast/pacfast /usr/bin/pacfast
-	chmod +x /usr/bin/PacFast
+	chmod +x /usr/bin/pacfast
 	
 	# install figlet to draw big ascii title
 	install_package 'figlet'
