@@ -256,10 +256,10 @@ install_base() { # {{{
 
 	mount -o remount,size=1G /run/archiso/cowspace
 	
-	pacfast -b . -Sw base base-devel --noconfirm --needed
+	pacfast -b . -Syw base base-devel --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	pacfast -b . -Sw dialog wpa_supplicant --noconfirm --needed
+	pacfast -b . -Syw dialog wpa_supplicant --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
