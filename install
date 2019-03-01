@@ -256,10 +256,10 @@ install_base() { # {{{
 
 	mount -o remount,size=1G /run/archiso/cowspace
 	
-	pacfast -Syyuw base base-devel --noconfirm --needed
+	pacfast -Sw --asdeps base base-devel --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	pacfast -Syyuw dialog wpa_supplicant --noconfirm --needed
+	pacfast -Sw --asdeps dialog wpa_supplicant --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
@@ -498,7 +498,7 @@ setup_bootloader() { # {{{
 	echo
 	print_progress 'Download necessary files for installation...'
 	# Note: for bios: pacman -Syu grub-bios os-prober
-	pacfast -Sw --overwrite grub efibootmgr os-prober --noconfirm --needed
+	pacfast -Sw --asdeps grub efibootmgr os-prober --noconfirm --needed
 	pacstrap -c ${MOUNTPOINT} grub efibootmgr os-prober
 
 	print_progress 'Install grub'
