@@ -39,9 +39,9 @@ install_requirements() { # {{{
 	setup_console_font
 
 	pacman -S --noconfirm git aria2
-	git clone https://github.com/Nosirus/app-fast
-	cp /root/arch_installer/app-fast/app-fast /usr/bin/app-fast
-	chmod +x /usr/bin/app-fast
+	git clone https://github.com/Nosirus/PacFast
+	cp /root/arch_installer/PacFast/pacfast /usr/bin/pacfast
+	chmod +x /usr/bin/PacFast
 	
 	# install figlet to draw big ascii title
 	install_package 'figlet'
@@ -254,24 +254,12 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	#mkdir -m 0755 -p "$MOUNTPOINT"/var/{cache/pacman/pkg,lib/pacman,log} "$MOUNTPOINT"/{dev,run,etc}
-	#mkdir -m 1777 -p "$MOUNTPOINT"/tmp
-	#mkdir -m 0555 -p "$MOUNTPOINT"/{sys,proc}
-	
-	#mkdir -m 0755 -p "$MOUNTPOINT/var/cache/pacman/pkg"
 	mount -o remount,size=1G /run/archiso/cowspace
-	sed -i '116,118 s/^/#/' /usr/bin/app-fast
-	app-fast -Sy base base-devel
-	#mv /var/cache/pacman/pkg/* /run/archiso/cowspace/persistent_ARCH_201901/X86_64/uppderdir/var/cache/pacman/pkg
-	#sed -i '116,118 s/^#//' /usr/bin/app-fast
 	
+	pacfast -Sw base base-devel --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	#sed -i '116,118 s/^/#/' /usr/bin/app-fast
-	app-fast -Sy dialog wpa_supplicant
-	#mv /var/cache/pacman/pkg/* /run/archiso/cowspace/persistent_ARCH_201901/X86_64/uppderdir/var/cache/pacman/pkg
-	sed -i '116,118 s/^#//' /usr/bin/app-fast
-
+	pacfast -Sw dialog wpa_supplicant --noconfirm --needed
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
@@ -510,7 +498,8 @@ setup_bootloader() { # {{{
 	echo
 	print_progress 'Download necessary files for installation...'
 	# Note: for bios: pacman -Syu grub-bios os-prober
-	pacstrap ${MOUNTPOINT} grub efibootmgr os-prober
+	pacfast -Sw grub efibootmgr os-prober --noconfirm --needed
+	pacstrap -c ${MOUNTPOINT} grub efibootmgr os-prober
 
 	print_progress 'Install grub'
 	# arch_chroot "grub-install $DEVICE"
