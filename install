@@ -68,7 +68,22 @@ umount_partitions() { # {{{
 	done
 }
 # }}}
-create_partitions() { # {{{
+
+create_partitions(){
+	devices=($(lsblk -d | awk '{print "/dev/" $1}' | grep 'sd\|hd\|vd\|nvme\|mmcblk'))
+	select DEVICE in "${devices[@]}"; do
+		if contains_element "${DEVICE}" "${devices[@]}"; then
+			break
+		else
+			invalid_option
+		fi
+	done
+	# }}}
+	# modify partition {{{
+	cfdisk "$DEVICE"
+}
+
+create_partition() { # {{{
 	# select device {{{
 	print_title 'PARTITIONS'
 	print_partitions
