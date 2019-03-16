@@ -180,11 +180,15 @@ read_packages() { # {{{
 }
 # }}}
 install_package() { # {{{
-	#pacman -S --noconfirm --needed $@ # install if not exists
 	pacfast -S --noconfirm --needed $@ # install if not exists
 }
-
 # }}}
+
+download_package() { # {{{
+	pacfast -b . -Syw --noconfirm --needed $@
+}
+# }}}
+
 install_aur_package() { # {{{
 	local packages="$1"
 
