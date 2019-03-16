@@ -258,6 +258,28 @@ setup_partition() { # {{{
 }
 # }}}
 
+install_base2() {
+	rm ${MOUNTPOINT}${EFI_MOUNTPOINT}/vmlinuz-linux
+	print_title "LINUX VERSION"
+	version_list=("linux (default)" "linux-lts (long term support)" "linux-hardened (security features)");
+	PS3="$prompt1"
+	echo -e "Select linux version to install\n"
+	select VERSION in "${version_list[@]}"; do
+		if contains_element "$VERSION" "${version_list[@]}"; then
+			if [ "linux (default)" == "$VERSION" ];then
+				pacstrap ${MOUNTPOINT} base linux-headers
+		elif [ "linux-lts (long term support)" == "$VERSION" ];then
+			pacman -Sg base | cut -d ' ' -f 2 | sed s/\^linux\$/linux-lts/g | pacstrap ${MOUNTPOINT} - linux-lts-headers
+		elif [ "linux-hardened (security features)" == "$VERSION" ];then
+			pacman -Sg base | cut -d ' ' -f 2 | sed s/\^linux\$/linux-hardened/g | pacstrap ${MOUNTPOINT} - linux-hardened-headers
+		fi
+			break
+		else
+			invalid_option
+		fi
+	done
+}
+
 install_base() { # {{{
 	print_title 'INSTALL BASE SYSTEM'
 	print_info 'Using the pacstrap script we install the base system. The base-devel package group will be installed also.'
@@ -270,10 +292,10 @@ install_base() { # {{{
 
 	mount -o remount,size=1G /run/archiso/cowspace
 	
-	pacfast -b . -Syw base base-devel --noconfirm --needed
+	download_package 'base base-devel'
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	pacfast -b . -Syw dialog wpa_supplicant --noconfirm --needed
+	download_package 'dialog wpa_supplicant'
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
