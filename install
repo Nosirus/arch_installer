@@ -282,6 +282,13 @@ install_base() {
 			invalid_option
 		fi
 	done
+	
+	download_package 'dialog wpa_supplicant'
+	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+
+	print_progress 'setup network for the new system'
+	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
+	
 	enter_to_continue
 }
 
