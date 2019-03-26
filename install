@@ -265,7 +265,7 @@ set_base() { # {{{
 	while [[ "$OPTION" == n ]]; do
 		print_title 'LINUX KERNEL'
 
-		desktop_envs=(linux linux-lts linux-hardened linux-vfio)
+		linux_kernel=(linux linux-lts linux-hardened linux-vfio)
 		select opt in ${linux_kernel[@]}; do
 			if contains_element "${opt}" "${linux_kernel[@]}"; then
 				LINUX_KERNEL="$opt"
