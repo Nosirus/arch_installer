@@ -27,6 +27,8 @@ FORMAT_HOME_PARTITION=0
 
 MOUNTPOINT='/mnt'
 # }}}
+
+LINUX_KERNEL='linux-lts'
 # LOCALE {{{
 LOCALE='fr_FR'
 # }}}
