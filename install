@@ -258,7 +258,59 @@ setup_partition() { # {{{
 }
 # }}}
 
-install_base() {
+set_base() { # {{{
+	local linux_kernel
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'LINUX KERNEL'
+
+		desktop_envs=(linux linux-lts linux-hardened linux-vfio)
+		select opt in ${linux_kernel[@]}; do
+			if contains_element "${opt}" "${linux_kernel[@]}"; then
+				LINUX_KERNEL="$opt"
+				break
+			else
+				invalid_option
+			fi
+		done
+		confirm_yes "Confirm linux kernel ($LINUX_KERNEL)"
+	done
+}
+# }}}
+
+install_base() { # {{{
+	ask_default_option "$LINUX_KERNEL" set_base
+	update_option 'LINUX_KERNEL'
+
+	print_progress 'Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)'
+	install_package 'xorg xorg-xinit'
+	
+	download_package 'base "$LINUX_KERNEL"'
+	pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
+
+	#case "$LINUX_KERNEL" in
+	#linux)
+	#;;
+	#linux-lts)
+	#;;
+	#linux-hardened)
+	#;;
+	#linux-vfio)
+	#;;
+esac
+
+	download_package 'dialog wpa_supplicant'
+	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+
+	print_progress 'setup network for the new system'
+	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
+
+	enter_to_continue
+}
+# }}}
+
+install_base1() {
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 	mount -o remount,size=1G /run/archiso/cowspace
 	print_title "LINUX VERSION"
