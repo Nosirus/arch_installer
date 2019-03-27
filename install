@@ -294,7 +294,7 @@ install_base() { # {{{
 
 	mount -o remount,size=1G /run/archiso/cowspace
 	
-	download_package 'base $LINUX_KERNEL'
+	download_package 'base' "$LINUX_KERNEL"
 	pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
 
 	download_package 'dialog wpa_supplicant'
