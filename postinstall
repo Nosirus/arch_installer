@@ -236,12 +236,13 @@ install_kernel() { # {{{
 	print_title 'INSTALL LINUX KERNEL'
 	print_info 'Install custum kernel'
 
-	case "$DESKTOP_ENVIRONMENT" in
+	case "$LINUX_KERNEL" in
 	linux-vfio)
 		install_aur_package "$LINUX_KERNEL"
 	else
 		install_package "$LINUX_KERNEL"
 	esac
+	
 	enter_to_continue
 }
 # }}}
