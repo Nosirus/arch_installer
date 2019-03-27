@@ -309,10 +309,12 @@ install_base() { # {{{
 	update_option 'LINUX_KERNEL'
 
 	print_progress 'Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)'
+	mount -o remount,size=1G /run/archiso/cowspace
 	install_package 'xorg xorg-xinit'
 	
 	case "$LINUX_KERNEL" in
 	linux-vfio)
+		download_package 'base'
 		install_aur_package 'linux-vfio'
 		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
 			;;
