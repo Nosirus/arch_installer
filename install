@@ -268,7 +268,7 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	mount -o remount,size=1G /run/archiso/cowspace
+	mount -o remount,size=2G /run/archiso/cowspace
 	
 	download_package 'base base-devel'
 	pacstrap -c "$MOUNTPOINT" base base-devel
