@@ -315,7 +315,7 @@ install_base() { # {{{
 	linux-vfio)
 		install_aur_package 'linux-vfio'
 		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
-	else
+	#else
 		download_package 'base "$LINUX_KERNEL"'
 		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
 	;;
