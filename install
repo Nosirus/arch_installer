@@ -512,8 +512,8 @@ setup_bootloader() { # {{{
 	echo
 	print_progress 'Download necessary files for installation...'
 	# Note: for bios: pacman -Syu grub-bios os-prober
-	pacfast -Sw --asdeps grub efibootmgr os-prober --noconfirm --needed
-	pacstrap -c ${MOUNTPOINT} grub efibootmgr os-prober
+	download_package 'grub efibootmgr os-prober'
+	pacstrap -c "$MOUNTPOINT" grub efibootmgr os-prober
 
 	print_progress 'Install grub'
 	# arch_chroot "grub-install $DEVICE"
