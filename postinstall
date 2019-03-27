@@ -208,6 +208,44 @@ install_aur_helper() { # {{{
 }
 # }}}
 
+set_kernel() { # {{{
+	local linux_kernel
+
+	OPTION=n
+	while [[ "$OPTION" == n ]]; do
+		print_title 'LINUX KERNEL'
+
+		linux_kernel=(linux-lts linux-hardened linux-vfio)
+		select opt in ${linux_kernel[@]}; do
+			if contains_element "${opt}" "${linux_kernel[@]}"; then
+				LINUX_KERNEL="$opt"
+				break
+			else
+				invalid_option
+			fi
+		done
+		confirm_yes "Confirm linux kernel ($LINUX_KERNEL)"
+	done
+}
+# }}}
+
+install_kernel() { # {{{
+	ask_default_option "$LINUX_KERNEL" set_kernel
+	update_option 'LINUX_KERNEL'
+
+	print_title 'INSTALL LINUX KERNEL'
+	print_info 'Install custum kernel'
+
+	case "$DESKTOP_ENVIRONMENT" in
+	linux-vfio)
+		install_aur_package "$LINUX_KERNEL"
+	else
+		install_package "$LINUX_KERNEL"
+	esac
+	enter_to_continue
+}
+# }}}
+
 set_desktop_environment() { # {{{
 	local desktop_envs
 
