@@ -241,6 +241,7 @@ install_kernel() { # {{{
 		install_aur_package "$LINUX_KERNEL"
 	else
 		install_package "$LINUX_KERNEL"
+	;;
 	esac
 	
 	enter_to_continue
