@@ -313,12 +313,8 @@ install_base() { # {{{
 	
 	case "$LINUX_KERNEL" in
 	linux-vfio)
-		install_aur_package 'linux-vfio'
-		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
-	#else
-		download_package 'base "$LINUX_KERNEL"'
-		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
-	;;
+
+	#;;
 	#linux-lts)
 	#;;
 	#linux-hardened)
