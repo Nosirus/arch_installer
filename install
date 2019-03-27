@@ -311,6 +311,16 @@ install_base() { # {{{
 	print_progress 'Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)'
 	install_package 'xorg xorg-xinit'
 	
+	case "$LINUX_KERNEL" in
+	linux-vfio)
+		install_aur_package 'linux-vfio'
+		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
+			;;
+		*)
+			download_package 'base "$LINUX_KERNEL"'
+			pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
+		;;
+esac
 
 	#linux-lts)
 	#;;
@@ -318,7 +328,7 @@ install_base() { # {{{
 	#;;
 	#linux-vfio)
 	#;;
-esac
+#esac
 
 	download_package 'dialog wpa_supplicant'
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
