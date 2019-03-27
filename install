@@ -258,31 +258,6 @@ setup_partition() { # {{{
 }
 # }}}
 
-install_aur_helper() { # {{{
-	print_title 'AUR HELPER'
-	print_info "AUR helpers automate certain tasks for using the Arch User Repository. Most helpers automate the process of retrieving a package's PKGBUILD from the AUR and building the package."
-
-	if ! has_package yay; then
-		echo
-		print_progress 'Install yay..'
-		install_package 'go'
-		
-		cp /root/arch_installer/conf/makepkg.conf /etc/makepkg.conf
-
-		su --login "$USERNAME" -c '
-		
-		git clone https://aur.archlinux.org/yay.git
-		cd yay
-		makepkg -si
-		'
-	else
-		print_warning 'yay has already been installed'
-	fi
-
-	enter_to_continue
-}
-# }}}
-
 set_base() { # {{{
 	local linux_kernel
 
@@ -290,7 +265,7 @@ set_base() { # {{{
 	while [[ "$OPTION" == n ]]; do
 		print_title 'LINUX KERNEL'
 
-		linux_kernel=(linux linux-lts linux-hardened linux-vfio)
+		linux_kernel=(linux linux-lts linux-hardened)
 		select opt in ${linux_kernel[@]}; do
 			if contains_element "${opt}" "${linux_kernel[@]}"; then
 				LINUX_KERNEL="$opt"
@@ -308,29 +283,19 @@ install_base() { # {{{
 	ask_default_option "$LINUX_KERNEL" set_base
 	update_option 'LINUX_KERNEL'
 
-	print_progress 'Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)'
-	mount -o remount,size=1G /run/archiso/cowspace
-	install_package 'xorg xorg-xinit'
-	
-	case "$LINUX_KERNEL" in
-	linux-vfio)
-		download_package 'base'
-		install_aur_package 'linux-vfio'
-		pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
-			;;
-		*)
-			download_package 'base "$LINUX_KERNEL"'
-			pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
-		;;
-esac
+	print_title 'INSTALL BASE SYSTEM'
+	print_info 'Using the pacstrap script we install the base system. The base-devel package group will be installed also.'
 
-	#linux-lts)
-	#;;
-	#linux-hardened)
-	#;;
-	#linux-vfio)
-	#;;
-#esac
+	# remove old linux image in case you reinstall arch and have boot partition
+	# shared with window and you do not want to format it, so you have to delete
+	# the old linux image manually
+	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
+	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
+
+	mount -o remount,size=1G /run/archiso/cowspace
+	
+	download_package 'base "$LINUX_KERNEL"'
+	pacstrap -c "$MOUNTPOINT" base "$LINUX_KERNEL"
 
 	download_package 'dialog wpa_supplicant'
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
@@ -688,18 +653,17 @@ install() { # {{{
 		print_title 'ARCHLINUX INSTALLER'
 
 		echo "    1. $(mainmenu_item "${checklist[0]}"  'Partition the disks')"
-		echo "    2. $(mainmenu_item "${checklist[1]}"  'Install AUR helper')"
-		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install base')"
-		echo "    4. $(mainmenu_item "${checklist[3]}"  'Generate fstab')"
-		echo "    5. $(mainmenu_item "${checklist[4]}"  'Select locale' "$LOCALE")"
-		echo "    6. $(mainmenu_item "${checklist[5]}"  'Select timezone' "$ZONE/$SUBZONE")"
-		echo "    7. $(mainmenu_item "${checklist[6]}"  'Configure hardware clock' "$HARDWARE_CLOCK")"
-		echo "    8. $(mainmenu_item "${checklist[7]}"  'Select keyboard layout' "$KEYMAP")"
-		echo "    9. $(mainmenu_item "${checklist[8]}"  'Configure hostname' "$HOSTNAME")"
-		echo "   10. $(mainmenu_item "${checklist[9]}"  'Configure root password')"
-		echo "   11. $(mainmenu_item "${checklist[10]}"  'Configure mkinitcpio')"
-		echo "   12. $(mainmenu_item "${checklist[11]}" 'Setup bootloader')"
-		echo "   13. $(mainmenu_item "${checklist[12]}" 'Finish')"
+		echo "    2. $(mainmenu_item "${checklist[1]}"  'Install base')"
+		echo "    3. $(mainmenu_item "${checklist[2]}"  'Generate fstab')"
+		echo "    4. $(mainmenu_item "${checklist[3]}"  'Select locale' "$LOCALE")"
+		echo "    5. $(mainmenu_item "${checklist[4]}"  'Select timezone' "$ZONE/$SUBZONE")"
+		echo "    6. $(mainmenu_item "${checklist[5]}"  'Configure hardware clock' "$HARDWARE_CLOCK")"
+		echo "    7. $(mainmenu_item "${checklist[6]}"  'Select keyboard layout' "$KEYMAP")"
+		echo "    8. $(mainmenu_item "${checklist[7]}"  'Configure hostname' "$HOSTNAME")"
+		echo "	 9. $(mainmenu_item "${checklist[8]}"  'Configure root password')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Configure mkinitcpio')"
+		echo "   11. $(mainmenu_item "${checklist[10]}" 'Setup bootloader')"
+		echo "   12. $(mainmenu_item "${checklist[11]}" 'Finish')"
 		echo
 
 		read -p "Enter option (1-12): " OPTION
@@ -710,50 +674,46 @@ install() { # {{{
 				checklist[0]=1
 				;;
 			2)
-				install_aur_helper
-				checklist[2]=1
-				;;
-			3)
 				install_base
 				checklist[1]=1
 				;;
-			4)
+			3)
 				generate_fstab
 				checklist[2]=1
 				;;
-			5)
+			4)
 				select_locale
 				checklist[3]=1
 				;;
-			6)
+			5)
 				select_timezone
 				checklist[4]=1
 				;;
-			7)
+			6)
 				configure_hardware_clock
 				checklist[5]=1
 				;;
-			8)
+			7)
 				select_keyboard_layout
 				checklist[6]=1
 				;;
-			9)
+			8)
 				configure_hostname
 				checklist[7]=1
 				;;
-			10)
+			9)
 				create_root_password
 				checklist[8]=1
 				;;
-			11)
+			10)
 				configure_mkinitcpio
 				checklist[9]=1
 				;;
-			12)
+			11)
 				setup_bootloader
 				checklist[10]=1
 				;;
-			13)
+			12)
 				finish
 				checklist[11]=1
 				;;
