@@ -238,13 +238,12 @@ install_kernel() { # {{{
 
 		case "$LINUX_KERNEL" in
 		linux-vfio)
-				install_aur_package "$LINUX_KERNEL"
-				;;
+			install_aur_package "$LINUX_KERNEL"
+			;;
+		linux-lts|linux-hardened)
+			install_package "$LINUX_KERNEL"
+			;;
 		esac
-	else
-		install_package "$LINUX_KERNEL"
-	fi
-done
 
 	enter_to_continue
 }
