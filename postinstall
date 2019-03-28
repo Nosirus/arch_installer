@@ -572,8 +572,8 @@ install() { # {{{
 
 		echo "    1. $(mainmenu_item "${checklist[0]}"  'Create user account' "$USERNAME")"
 		echo "    2. $(mainmenu_item "${checklist[1]}"  'Configure mirror list' "$MIRRORLIST")"
-		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install Kernel' "$LINUX_KERNEL")"
-		echo "    4. $(mainmenu_item "${checklist[3]}"  'Install AUR helper')"
+		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install AUR helper')"
+		echo "    4. $(mainmenu_item "${checklist[3]}"  'Install Kernel' "$LINUX_KERNEL")"
 		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install desktop environment' "$DESKTOP_ENVIRONMENT")"
 		echo "    6. $(mainmenu_item "${checklist[5]}"  'Install packages')"
 		echo "    7. $(mainmenu_item "${checklist[6]}"  'Setup dotfiles' "$DOTFILES")"
@@ -597,11 +597,11 @@ install() { # {{{
 				checklist[1]=1
 				;;
 			3)
-				install_kernel
+				install_aur_helper
 				checklist[2]=1
 				;;
 			4)
-				install_aur_helper
+				install_kernel
 				checklist[3]=1
 				;;
 			5)
