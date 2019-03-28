@@ -215,7 +215,7 @@ set_kernel() { # {{{
 	while [[ "$OPTION" == n ]]; do
 		print_title 'LINUX KERNEL'
 
-		linux_kernel=(linux-lts linux-hardened linux-vfio)
+		linux_kernel=(linux-lts linux-hardened)
 		select opt in ${linux_kernel[@]}; do
 			if contains_element "${opt}" "${linux_kernel[@]}"; then
 				LINUX_KERNEL="$opt"
@@ -236,14 +236,14 @@ install_kernel() { # {{{
 	print_title 'INSTALL LINUX KERNEL'
 	print_info 'Install custum kernel'
 
-		case "$LINUX_KERNEL" in
-		linux-vfio)
-			install_aur_package "$LINUX_KERNEL"
-			;;
-		linux-lts|linux-hardened)
+		#case "$LINUX_KERNEL" in
+		#linux-vfio)
+			#install_aur_package "$LINUX_KERNEL"
+			#;;
+		#linux-lts|linux-hardened)
 			install_package "$LINUX_KERNEL"
-			;;
-		esac
+			#;;
+		#esac
 
 	enter_to_continue
 }
