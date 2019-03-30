@@ -10,6 +10,8 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 EDITOR='nano'
 # }}}
 # MIRRORLIST {{{
+COUNTRY_CODE='FR'
+COUNTRY_NAME='France'
 MIRRORLIST='sort by download speed'
 # }}}
 # PARTITION {{{
