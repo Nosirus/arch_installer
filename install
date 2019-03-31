@@ -89,7 +89,7 @@ configure_mirrorlist(){
 	update_option 'COUNTRY_NAME'
 	update_option 'COUNTRY_CODE'
 	
-	url="https://www.archlinux.org/mirrorlist/?country=${country_code}&use_mirror_status=on"
+	url="https://www.archlinux.org/mirrorlist/?country=${COUNTRY_CODE}&use_mirror_status=on"
 
 	tmpfile=$(mktemp --suffix=-mirrorlist)
 
