@@ -236,14 +236,7 @@ install_kernel() { # {{{
 	print_title 'INSTALL LINUX KERNEL'
 	print_info 'Install custum kernel'
 
-		#case "$LINUX_KERNEL" in
-		#linux-vfio)
-			#install_aur_package "$LINUX_KERNEL"
-			#;;
-		#linux-lts|linux-hardened)
-			install_package "$LINUX_KERNEL"
-			#;;
-		#esac
+	install_package "$LINUX_KERNEL"
 
 	enter_to_continue
 }
