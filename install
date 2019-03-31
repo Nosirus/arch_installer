@@ -74,6 +74,7 @@ set_mirrorlist(){
 			if contains_element "${opt}" "${country_name[@]}"; then
 				COUNTRY_NAME="$opt"
 				COUNTRY_CODE=${countries_code[$(( $REPLY - 1 ))]}
+					update_option 'COUNTRY_CODE'
 				break
 			else
 				invalid_option
@@ -87,7 +88,6 @@ done
 configure_mirrorlist(){
 	ask_default_option "$COUNTRY_NAME" set_mirrorlist
 	update_option 'COUNTRY_NAME'
-	update_option 'COUNTRY_CODE'
 	
 	url="https://www.archlinux.org/mirrorlist/?country=${COUNTRY_CODE}&use_mirror_status=on"
 
