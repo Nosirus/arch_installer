@@ -75,7 +75,7 @@ set_mirrorlist(){
 				invalid_option
 			fi
 		done
-		confirm_yes "Confirm linux kernel ($LINUX_KERNEL)"
+		confirm_yes "Confirm Mirrorlist ($COUNTRY_NAME)"
 done
 }
 #}}}
