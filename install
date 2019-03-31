@@ -87,6 +87,7 @@ done
 configure_mirrorlist(){
 	ask_default_option "$COUNTRY_NAME" set_mirrorlist
 	update_option 'COUNTRY_NAME'
+	update_option 'COUNTRY_CODE'
 	
 	url="https://www.archlinux.org/mirrorlist/?country=${country_code}&use_mirror_status=on"
 
