@@ -73,7 +73,7 @@ set_mirrorlist(){
 		select opt in ${country_name[@]}; do
 			if contains_element "${opt}" "${country_name[@]}"; then
 				COUNTRY_NAME="$opt"
-				country_code=${country_code[$(( $REPLY - 1 ))]}
+				COUNTRY_CODE=${country_code[$(( $REPLY - 1 ))]}
 				break
 			else
 				invalid_option
