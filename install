@@ -72,8 +72,8 @@ set_mirrorlist(){
 		echo "Select your country:"
 		select opt in ${country_name[@]}; do
 			if contains_element "${opt}" "${country_name[@]}"; then
-				#country_code=${countries_code[$(( $REPLY - 1 ))]}
 				COUNTRY_NAME="$opt"
+				country_code=${country_code[$(( $REPLY - 1 ))]}
 				break
 			else
 				invalid_option
@@ -86,8 +86,33 @@ done
 
 configure_mirrorlist(){
 	ask_default_option "$COUNTRY_NAME" set_mirrorlist
-	
 	update_option 'COUNTRY_NAME'
+	
+	url="https://www.archlinux.org/mirrorlist/?country=${country_code}&use_mirror_status=on"
+
+	tmpfile=$(mktemp --suffix=-mirrorlist)
+
+	# Get latest mirror list and save to tmpfile
+	curl -so ${tmpfile} ${url}
+	sed -i 's/^#Server/Server/g' ${tmpfile}
+
+	# Backup and replace current mirrorlist file (if new file is non-zero)
+	if [[ -s ${tmpfile} ]]; then
+		{ echo " Backing up the original mirrorlist..."
+		mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
+		{ echo " Rotating the new list into place..."
+		mv -i ${tmpfile} /etc/pacman.d/mirrorlist; }
+	else
+		echo " Unable to update, could not download list."
+	fi
+	# better repo should go first
+	pacman -Sy pacman-contrib
+	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.tmp
+	rankmirrors /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
+	rm /etc/pacman.d/mirrorlist.tmp
+	# allow global read access (required for non-root yaourt execution)
+	chmod +r /etc/pacman.d/mirrorlist
+	$EDITOR /etc/pacman.d/mirrorlist
 
 	enter_to_continue
 }
