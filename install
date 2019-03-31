@@ -628,7 +628,7 @@ install() { # {{{
 
 	while true; do
 		print_title 'ARCHLINUX INSTALLER'
-		echo "    1) $(mainmenu_item "${checklist[0]}"  'Configure Mirrorlist' "$COUNTRY_NAME")"
+		echo "    1. $(mainmenu_item "${checklist[0]}"  'Configure Mirrorlist' "$COUNTRY_NAME")"
 		echo "    2. $(mainmenu_item "${checklist[1]}"  'Partition the disks')"
 		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install base')"
 		echo "    4. $(mainmenu_item "${checklist[3]}"  'Generate fstab')"
