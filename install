@@ -74,7 +74,8 @@ set_mirrorlist(){
 			if contains_element "${opt}" "${country_name[@]}"; then
 				COUNTRY_NAME="$opt"
 				#COUNTRY_CODE=${countries_code[$(( $REPLY - 1 ))]}
-				COUNTRY_CODE=$(($REPLY - 1))
+				COUNTRY_CODE=${countries_code[REPLY - 1]}
+				#COUNTRY_CODE=$(($REPLY - 1))
 				break
 			else
 				invalid_option
