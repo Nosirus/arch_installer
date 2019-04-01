@@ -213,7 +213,8 @@ set_kernel() { # {{{
 
 	OPTION=n
 	while [[ "$OPTION" == n ]]; do
-		print_title 'LINUX KERNEL'
+		print_title 'INSTALL LINUX KERNEL'
+		print_info 'Install custum kernel'
 
 		linux_kernel=(linux-lts linux-hardened)
 		select opt in ${linux_kernel[@]}; do
@@ -232,9 +233,6 @@ set_kernel() { # {{{
 install_kernel() { # {{{
 	ask_default_option "$LINUX_KERNEL" set_kernel
 	update_option 'LINUX_KERNEL'
-
-	print_title 'INSTALL LINUX KERNEL'
-	print_info 'Install custum kernel'
 
 	install_package "$LINUX_KERNEL"
 
