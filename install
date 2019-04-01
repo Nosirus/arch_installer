@@ -73,8 +73,8 @@ set_mirrorlist(){
 		select opt in ${country_name[@]}; do
 			if contains_element "${opt}" "${country_name[@]}"; then
 				COUNTRY_NAME="$opt"
-				COUNTRY_CODE=${countries_code[$(( $REPLY - 1 ))]}
-					update_option 'COUNTRY_CODE'
+				#COUNTRY_CODE=${countries_code[$(( $REPLY - 1 ))]}
+				COUNTRY_CODE=$(($REPLY - 1))
 				break
 			else
 				invalid_option
@@ -88,6 +88,7 @@ done
 configure_mirrorlist(){
 	ask_default_option "$COUNTRY_NAME" set_mirrorlist
 	update_option 'COUNTRY_NAME'
+	update_option 'COUNTRY_CODE'
 	
 	url="https://www.archlinux.org/mirrorlist/?country=${COUNTRY_CODE}&use_mirror_status=on"
 
@@ -107,7 +108,7 @@ configure_mirrorlist(){
 		echo " Unable to update, could not download list."
 	fi
 	# better repo should go first
-	pacman -Sy pacman-contrib
+	install_package 'pacman-contrib'
 	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.tmp
 	rankmirrors /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
 	rm /etc/pacman.d/mirrorlist.tmp
