@@ -47,6 +47,9 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
+	
+	# a python script to sort mirrorlist
+	install_package 'reflector'
 }
 # }}}
 pre_install() { # {{{
@@ -57,70 +60,67 @@ pre_install() { # {{{
 }
 # }}}
 
-set_mirrorlist(){
-  #local countries_code
-  #local country_name
-  
+set_mirrorlist() { # {{{
+	local mirrorlist_opts
+
 	OPTION=n
 	while [[ "$OPTION" == n ]]; do
-		print_title 'MIRRORLIST'
-		print_info "This option is a guide to selecting and configuring your mirrors, and a listing of current available mirrors."
+		print_title "MIRRORLIST"
 
-  		local countries_code=("AU" "AT" "BY" "BE" "BR" "BG" "CA" "CL" "CN" "CO" "CZ" "DK" "EE" "FI" "FR" "DE" "GR" "HK" "HU" "ID" "IN" "IR" "IE" "IL" "IT" "JP" "KZ" "KR" "LV" "LU" "MK" "NL" "NC" "NZ" "NO" "PL" "PT" "RO" "RU" "RS" "SG" "SK" "ZA" "ES" "LK" "SE" "CH" "TW" "TR" "UA" "GB" "US" "UZ" "VN")
-  		local country_name=("Australia" "Austria" "Belarus" "Belgium" "Brazil" "Bulgaria" "Canada" "Chile" "China" "Colombia" "Czech Republic" "Denmark" "Estonia" "Finland" "France" "Germany" "Greece" "Hong Kong" "Hungary" "Indonesia" "India" "Iran" "Ireland" "Israel" "Italy" "Japan" "Kazakhstan" "Korea" "Latvia" "Luxembourg" "Macedonia" "Netherlands" "New Caledonia" "New Zealand" "Norway" "Poland" "Portugal" "Romania" "Russia" "Serbia" "Singapore" "Slovakia" "South Africa" "Spain" "Sri Lanka" "Sweden" "Switzerland" "Taiwan" "Turkey" "Ukraine" "United Kingdom" "United States" "Uzbekistan" "Viet Nam")
+		print_info 'Packages to be installed must be downloaded from mirror servers, which are defined in /etc/pacman.d/mirrorlist.'
+		print_info 'The higher a mirror is placed in the list, the more priority it is given when downloading a package. You may want to edit the file accordingly, and move the geographically closest mirrors to the top of the list, although other criteria should be taken into account.'
+		print_info 'This file will later be copied to the new system by pacstrap, so it is worth getting right.'
 
-		#echo "Select your country:"
-		select opt in "${country_name[@]}"; do
-			if contains_element "${opt}" "${country_name[@]}"; then
-				COUNTRY_NAME="$opt"
-				#COUNTRY_CODE=${countries_code[$(( $REPLY - 1 ))]}
-				COUNTRY_CODE=${countries_code[REPLY - 1]}
+		print_paragraph 'Here you can choose to sort the mirror list by download speed or leave it to default. Sorting the mirror list will take for a while'
 
-				#COUNTRY_CODE=$(($REPLY - 1))
+		mirrorlist_opts=('default' 'sort by download speed')
+		select opt in "${mirrorlist_opts[@]}"; do
+			if contains_element "${opt}" "${mirrorlist_opts[@]}"; then
+				MIRRORLIST="$opt"
 				break
 			else
 				invalid_option
 			fi
 		done
-		confirm_yes "Confirm Mirrorlist ($COUNTRY_NAME)"
-done
+		confirm_yes "Confirm mirror list option ($MIRRORLIST)"
+	done
 }
-#}}}
+# }}}
+configure_mirrorlist() { # {{{
+	ask_default_option "$MIRRORLIST" set_mirrorlist
+	update_option 'MIRRORLIST'
 
-configure_mirrorlist(){
-	ask_default_option "$COUNTRY_NAME" set_mirrorlist
-	update_option 'COUNTRY_NAME'
-	update_option 'COUNTRY_CODE'
-	
-	url="https://www.archlinux.org/mirrorlist/?country=${COUNTRY_CODE}&use_mirror_status=on"
-
+	print_progress 'Backing up the original mirrorlist...'
+	mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 	tmpfile=$(mktemp --suffix=-mirrorlist)
 
-	# Get latest mirror list and save to tmpfile
-	curl -so ${tmpfile} ${url}
-	sed -i 's/^#Server/Server/g' ${tmpfile}
+	case "$MIRRORLIST" in
+		'default')
+			# Get latest mirror list and save to tmpfile
+			curl -so "$tmpfile" 'https://www.archlinux.org/mirrorlist/all/'
+			sed -i 's/^#Server/Server/g' "$tmpfile"
+			;;
+		'sort by download speed')
+			reflector --verbose --connection-timeout 3 --latest 200 --number 40 --protocol https --protocol http --sort rate --save "$tmpfile"
+			;;
+		*)
+			invalid_option
+			;;
+	esac
 
-	# Backup and replace current mirrorlist file (if new file is non-zero)
-	if [[ -s ${tmpfile} ]]; then
-		{ echo " Backing up the original mirrorlist..."
-		mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
-		{ echo " Rotating the new list into place..."
-		mv -i ${tmpfile} /etc/pacman.d/mirrorlist; }
+	# replace current mirrorlist file (if new file is non-zero)
+	if [[ -s "$tmpfile" ]]; then
+		mv -i "$tmpfile" /etc/pacman.d/mirrorlist
+		# allow global read access (required for non-root yaourt execution)
+		chmod +r /etc/pacman.d/mirrorlist
+		$EDITOR /etc/pacman.d/mirrorlist
 	else
-		echo " Unable to update, could not download list."
+		print_warning 'Unable to update'
 	fi
-	# better repo should go first
-	install_package 'pacman-contrib'
-	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.tmp
-	rankmirrors /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
-	rm /etc/pacman.d/mirrorlist.tmp
-	# allow global read access (required for non-root yaourt execution)
-	chmod +r /etc/pacman.d/mirrorlist
-	$EDITOR /etc/pacman.d/mirrorlist
 
 	enter_to_continue
 }
-#}}}
+# }}}
 
 umount_partitions() { # {{{
 	print_progress 'Unmounting partitions..'
@@ -633,8 +633,8 @@ install() { # {{{
 
 	while true; do
 		print_title 'ARCHLINUX INSTALLER'
-		echo "    1. $(mainmenu_item "${checklist[0]}"  'Configure Mirrorlist' "$COUNTRY_NAME")"
-		echo "    2. $(mainmenu_item "${checklist[1]}"  'Partition the disks')"
+		echo "    1. $(mainmenu_item "${checklist[0]}"  'Partition the disks')"
+		echo "    2. $(mainmenu_item "${checklist[1]}"  'Configure mirror list' "$MIRRORLIST")"
 		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install base')"
 		echo "    4. $(mainmenu_item "${checklist[3]}"  'Generate fstab')"
 		echo "    5. $(mainmenu_item "${checklist[4]}"  'Select locale' "$LOCALE")"
@@ -652,11 +652,11 @@ install() { # {{{
 
 		case "$OPTION" in
 			1)
-				configure_mirrorlist
+				setup_partition
 				checklist[0]=1
 				;;
 			2)
-				setup_partition
+				configure_mirrorlist
 				checklist[1]=1
 				;;
 			3)
