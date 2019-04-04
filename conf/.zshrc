@@ -97,7 +97,7 @@ alias ls="ls --color"
 alias ys="yay -S --noconfirm --needed --removemake --cleanafter"
 alias yr="yay -R"
 alias yc="yay -Yc"
-
+alias ml="reflector --verbose --connection-timeout 3 --latest 200 --number 40 --protocol https --protocol http --sort rate --save /etc/pacman.d/mirrorlist"
 bindkey "\e[3~" delete-char
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
