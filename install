@@ -616,6 +616,7 @@ finish() { # {{{
 
 	print_warning "\nA copy of the AUI will be placed in /root directory of your new system"
 	cp -r "$(pwd)" "$MOUNTPOINT/root"
+	cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
 	confirm_yes 'Reboot system'
 	if [[ "$OPTION" != n ]]; then
