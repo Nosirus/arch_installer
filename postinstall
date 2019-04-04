@@ -87,7 +87,7 @@ install_requirements() { # {{{
 	install_package 'figlet'
 
 	# a python script to sort mirrorlist
-	install_package 'python reflector'
+	install_package 'reflector'
 }
 # }}}
 
@@ -116,68 +116,6 @@ select_user_account() { # {{{
 
 	useradd -m -g users -G wheel -s /bin/bash "$USERNAME"
 	passwd "$USERNAME"
-
-	enter_to_continue
-}
-# }}}
-
-set_mirrorlist() { # {{{
-	local mirrorlist_opts
-
-	OPTION=n
-	while [[ "$OPTION" == n ]]; do
-		print_title "MIRRORLIST"
-
-		print_info 'Packages to be installed must be downloaded from mirror servers, which are defined in /etc/pacman.d/mirrorlist.'
-		print_info 'The higher a mirror is placed in the list, the more priority it is given when downloading a package. You may want to edit the file accordingly, and move the geographically closest mirrors to the top of the list, although other criteria should be taken into account.'
-		print_info 'This file will later be copied to the new system by pacstrap, so it is worth getting right.'
-
-		print_paragraph 'Here you can choose to sort the mirror list by download speed or leave it to default. Sorting the mirror list will take for a while'
-
-		mirrorlist_opts=('default' 'sort by download speed')
-		select opt in "${mirrorlist_opts[@]}"; do
-			if contains_element "${opt}" "${mirrorlist_opts[@]}"; then
-				MIRRORLIST="$opt"
-				break
-			else
-				invalid_option
-			fi
-		done
-		confirm_yes "Confirm mirror list option ($MIRRORLIST)"
-	done
-}
-# }}}
-configure_mirrorlist() { # {{{
-	ask_default_option "$MIRRORLIST" set_mirrorlist
-	update_option 'MIRRORLIST'
-
-	print_progress 'Backing up the original mirrorlist...'
-	mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
-	tmpfile=$(mktemp --suffix=-mirrorlist)
-
-	case "$MIRRORLIST" in
-		'default')
-			# Get latest mirror list and save to tmpfile
-			curl -so "$tmpfile" 'https://www.archlinux.org/mirrorlist/all/'
-			sed -i 's/^#Server/Server/g' "$tmpfile"
-			;;
-		'sort by download speed')
-			reflector --verbose --connection-timeout 3 --latest 200 --number 40 --sort rate --save "$tmpfile"
-			;;
-		*)
-			invalid_option
-			;;
-	esac
-
-	# replace current mirrorlist file (if new file is non-zero)
-	if [[ -s "$tmpfile" ]]; then
-		mv -i "$tmpfile" /etc/pacman.d/mirrorlist
-		# allow global read access (required for non-root yaourt execution)
-		chmod +r /etc/pacman.d/mirrorlist
-		$EDITOR /etc/pacman.d/mirrorlist
-	else
-		print_warning 'Unable to update'
-	fi
 
 	enter_to_continue
 }
@@ -562,21 +500,20 @@ install() { # {{{
 		print_title 'ARCHLINUX INSTALLER'
 
 		echo "    1. $(mainmenu_item "${checklist[0]}"  'Create user account' "$USERNAME")"
-		echo "    2. $(mainmenu_item "${checklist[1]}"  'Configure mirror list' "$MIRRORLIST")"
-		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install AUR helper')"
-		echo "    4. $(mainmenu_item "${checklist[3]}"  'Install Kernel' "$LINUX_KERNEL")"
-		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install desktop environment' "$DESKTOP_ENVIRONMENT")"
-		echo "    6. $(mainmenu_item "${checklist[5]}"  'Install packages')"
-		echo "    7. $(mainmenu_item "${checklist[6]}"  'Setup dotfiles' "$DOTFILES")"
-		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install fonts')"
-		echo "    9. $(mainmenu_item "${checklist[8]}"  'Install translation')"
-		echo "   10. $(mainmenu_item "${checklist[9]}"  'Install Zram')"
-		echo "   11. $(mainmenu_item "${checklist[10]}"  'Docker & Portainer')"
-		echo "   12. $(mainmenu_item "${checklist[11]}" 'Ending script')"
-		echo "   13. $(mainmenu_item "${checklist[12]}" 'Finish')"
+		echo "    2. $(mainmenu_item "${checklist[1]}"  'Install AUR helper')"
+		echo "    3. $(mainmenu_item "${checklist[2]}"  'Install Kernel' "$LINUX_KERNEL")"
+		echo "    4. $(mainmenu_item "${checklist[3]}"  'Install desktop environment' "$DESKTOP_ENVIRONMENT")"
+		echo "    5. $(mainmenu_item "${checklist[4]}"  'Install packages')"
+		echo "    6. $(mainmenu_item "${checklist[5]}"  'Setup dotfiles' "$DOTFILES")"
+		echo "    7. $(mainmenu_item "${checklist[6]}"  'Install fonts')"
+		echo "    8. $(mainmenu_item "${checklist[7]}"  'Install translation')"
+		echo "    9. $(mainmenu_item "${checklist[8]}"  'Install Zram')"
+		echo "   10. $(mainmenu_item "${checklist[9]}"  'Docker & Portainer')"
+		echo "   11. $(mainmenu_item "${checklist[10]}" 'Ending script')"
+		echo "   12. $(mainmenu_item "${checklist[11]}" 'Finish')"
 		echo
 
-		read -p "Enter option (1-13): " OPTION
+		read -p "Enter option (1-12): " OPTION
 
 		case "$OPTION" in
 			1)
@@ -584,52 +521,48 @@ install() { # {{{
 				checklist[0]=1
 				;;
 			2)
-				configure_mirrorlist
+				install_aur_helper
 				checklist[1]=1
 				;;
 			3)
-				install_aur_helper
+				install_kernel
 				checklist[2]=1
 				;;
 			4)
-				install_kernel
+				install_desktop_environment
 				checklist[3]=1
 				;;
 			5)
-				install_desktop_environment
+				install_packages
 				checklist[4]=1
 				;;
 			6)
-				install_packages
+				setup_dotfiles
 				checklist[5]=1
 				;;
 			7)
-				setup_dotfiles
+				install_fonts
 				checklist[6]=1
 				;;
-			8)
-				install_fonts
+			8)	
+				install_translation
 				checklist[7]=1
 				;;
 			9)	
-				install_translation
-				checklist[8]=1
-				;;
-			10)	
 				install_zram
-				checklist[9]=1
+				checklist[8]=1
 				;;	
-			11)	
+			10)	
 				install_docker
+				checklist[9]=1
+				;;
+			11)	
+				ending_script
 				checklist[10]=1
 				;;
-			12)	
-				ending_script
-				checklist[11]=1
-				;;
-			13)
+			12)
 				finish
-				checklist[12]=1
+				checklist[11]=1
 				;;
 			*)
 				invalid_option
