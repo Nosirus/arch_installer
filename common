@@ -10,8 +10,6 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 EDITOR='nano'
 # }}}
 # MIRRORLIST {{{
-COUNTRY_CODE='FR'
-COUNTRY_NAME='France'
 MIRRORLIST='sort by download speed'
 # }}}
 # PARTITION {{{
@@ -22,14 +20,13 @@ LVM_PARTITION=''
 
 ROOT_SIZE='30G'
 HOME_SIZE='100%FREE'
-SWAP_SIZE='4G'
 
 FORMAT_BOOT_PARTITION=0
 FORMAT_HOME_PARTITION=0
 
 MOUNTPOINT='/mnt'
 # }}}
-
+# KERNEL {{{
 LINUX_KERNEL='linux-lts'
 # LOCALE {{{
 LOCALE='fr_FR'
