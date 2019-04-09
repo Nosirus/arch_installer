@@ -42,6 +42,8 @@ install_requirements() { # {{{
 	
 	setup_console_font
 	
+	#install_package 'archlinux-keyring'
+	
 	# install figlet to draw big ascii title
 	install_package 'figlet'
 
