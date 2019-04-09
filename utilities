@@ -180,12 +180,12 @@ read_packages() { # {{{
 }
 # }}}
 install_package() { # {{{
-	pacfast -S --noconfirm --needed $@ # install if not exists
+	pacfast $@ -S --noconfirm --needed # install if not exists
 }
 # }}}
 
 download_package() { # {{{
-	pacfast -b . -Syw --noconfirm --needed $@
+	pacfast $@ -b . -Syw --noconfirm --needed
 }
 # }}}
 
