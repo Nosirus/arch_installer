@@ -125,19 +125,22 @@ install_aur_helper() { # {{{
 	print_title 'AUR HELPER'
 	print_info "AUR helpers automate certain tasks for using the Arch User Repository. Most helpers automate the process of retrieving a package's PKGBUILD from the AUR and building the package."
 
-	if ! has_package yay; then
-		echo
-		print_progress 'Install yay..'
-		install_package 'go'
+	#if ! has_package yay; then
+	#	echo
+	#	print_progress 'Install yay..'
+	#	install_package 'go'
 		
-		cp /root/arch_installer/conf/makepkg.conf /etc/makepkg.conf
+	#	cp /root/arch_installer/conf/makepkg.conf /etc/makepkg.conf
 
-		su --login "$USERNAME" -c '
+	#	su --login "$USERNAME" -c '
 		
-		git clone https://aur.archlinux.org/yay.git
-		cd yay
-		makepkg -si
-		'
+	#	git clone https://aur.archlinux.org/yay.git
+	#	cd yay
+	#	makepkg -si
+	#	'
+	if ! has_package baph; then
+		git clone https://bitbucket.org/natemaia/baph.git
+		cp baph/baph /usr/bin/baph
 	else
 		print_warning 'yay has already been installed'
 	fi
