@@ -44,6 +44,8 @@ install_requirements() { # {{{
 	
 	setup_console_font
 	
+	pacman -Sy -b .
+	
 	#install_package 'archlinux-keyring'
 	
 	# install figlet to draw big ascii title
@@ -57,7 +59,7 @@ install_requirements() { # {{{
 }
 # }}}
 pre_install() { # {{{
-	update_pacman_db
+	#update_pacman_db
 	check_connection
 	check_firmware
 	install_requirements
@@ -338,10 +340,10 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	download_package 'base base-devel'
+	install_package 'base base-devel'
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	download_package 'dialog wpa_supplicant'
+	install_package 'dialog wpa_supplicant'
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
