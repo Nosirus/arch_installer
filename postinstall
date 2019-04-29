@@ -85,9 +85,6 @@ install_requirements() { # {{{
 
 	# install figlet to draw big ascii title
 	install_package 'figlet'
-
-	# a python script to sort mirrorlist
-	install_package 'reflector'
 }
 # }}}
 
