@@ -44,7 +44,7 @@ install_requirements() { # {{{
 	
 	setup_console_font
 	
-	pacman -Sy -b .
+	#pacman -Sy -b .
 	
 	#install_package 'archlinux-keyring'
 	
