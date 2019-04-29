@@ -185,7 +185,8 @@ install_package() { # {{{
 # }}}
 
 download_package() { # {{{
-	pacfast -Syw -b . --noconfirm --needed $@
+	pacman -b .
+	pacfast -S --noconfirm --needed $@
 }
 # }}}
 
