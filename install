@@ -340,10 +340,10 @@ install_base() { # {{{
 	# see https://bbs.archlinux.org/viewtopic.php?pid=1384654#p1384654
 	rm "$MOUNTPOINT/boot/vmlinuz-linux" 2> /dev/null
 
-	install_package 'base base-devel'
+	download_package 'base base-devel'
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	install_package 'dialog wpa_supplicant'
+	download_package 'dialog wpa_supplicant'
 	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
 	print_progress 'setup network for the new system'
