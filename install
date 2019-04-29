@@ -53,7 +53,7 @@ install_requirements() { # {{{
 	install_package 'fzf'
 	
 	# a python script to sort mirrorlist
-	install_package 'reflector'
+	#install_package 'reflector'
 }
 # }}}
 pre_install() { # {{{
@@ -105,7 +105,8 @@ configure_mirrorlist() { # {{{
 			sed -i 's/^#Server/Server/g' "$tmpfile"
 			;;
 		'sort by download speed')
-			reflector --verbose --connection-timeout 3 --latest 200 --number 40 --protocol https --protocol http --sort rate --save "$tmpfile"
+			#reflector --verbose --connection-timeout 3 --latest 200 --number 40 --protocol https --protocol http --sort rate --save "$tmpfile"
+			pacfast -M
 			;;
 		*)
 			invalid_option
