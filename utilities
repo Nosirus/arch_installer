@@ -183,6 +183,10 @@ install_package() { # {{{
 	pacfast -S $@ --noconfirm --needed # install if not exists
 }
 # }}}
+download_package() { # {{{
+	pacfast -Syw -b . $@ --noconfirm --needed # install if not exists
+}
+# }}}
 
 install_aur_package() { # {{{
 	local packages="$1"
