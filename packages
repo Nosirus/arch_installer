@@ -62,18 +62,18 @@ zsh powerline-fonts zsh-theme-powerlevel9k zsh-syntax-highlighting zsh-autosugge
 #mkvtoolnix-gui
 #mediainfo-gui
 #conky conky-manager
-gst-plugins-{base,good,bad,ugly} gst-libav
-foomatic-{db,db-ppds,db-gutenprint-ppds,db-nonfree,db-nonfree-ppds} gutenprint
+#gst-plugins-{base,good,bad,ugly} gst-libav
+#foomatic-{db,db-ppds,db-gutenprint-ppds,db-nonfree,db-nonfree-ppds} gutenprint
 notepadqq
 #qbittorrent
-#htop
+glances
 #plasma5-applets-thermal-monitor
 #sshfs #for KDE connect
 kcron
 
 # AUR Packages
 #filebot47 #or filebot
-#snapraid
+snapraid
 #mergerfs
 #qmplay2
 #looking-glass
@@ -87,7 +87,7 @@ kcron
 #diskmonitor
 #better-plasma5-video-wallpaper-git
 #libc++abi libc++ --mflags --nocheck
-#discord
+discord
 #lscolors-git
 #boostnote
 #snap-pac #no aur
