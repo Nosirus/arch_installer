@@ -106,7 +106,7 @@ configure_mirrorlist() { # {{{
 			;;
 		'sort by download speed')
 			#reflector --verbose --connection-timeout 3 --latest 200 --number 40 --protocol https --protocol http --sort rate --save "$tmpfile"
-			pacfast -M
+			pacfast -Sy -M
 			;;
 		*)
 			invalid_option
