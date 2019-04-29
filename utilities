@@ -193,9 +193,9 @@ install_aur_package() { # {{{
 	local packages="$1"
 
 	for package in ${packages}; do
-		su --login "$USERNAME" -c "yay -S --noconfirm --needed --removemake --cleanafter $package" # install if not exists
-		#rm -rf "/tmp/yay-${USERNAME}/*"
-		rm -rf /home/"$USERNAME"/yay/"$package"
+		#su --login "$USERNAME" -c "yay -S --noconfirm --needed --removemake --cleanafter $package" # install if not exists
+		#rm -rf /home/"$USERNAME"/yay/"$package"
+		su --login "$USERNAME" -c "baph -inN $package"
 	done
 }
 # }}}
