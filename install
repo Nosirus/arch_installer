@@ -44,8 +44,6 @@ install_requirements() { # {{{
 	
 	setup_console_font
 	
-	#pacman -Sy -b .
-	
 	#install_package 'archlinux-keyring'
 	
 	# install figlet to draw big ascii title
@@ -53,9 +51,6 @@ install_requirements() { # {{{
 
 	# option filter
 	install_package 'fzf'
-	
-	# a python script to sort mirrorlist
-	#install_package 'reflector'
 }
 # }}}
 pre_install() { # {{{
