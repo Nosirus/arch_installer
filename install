@@ -97,7 +97,7 @@ configure_mirrorlist() { # {{{
 	update_option 'MIRRORLIST'
 
 	print_progress 'Backing up the original mirrorlist...'
-	mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
+	mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig >/dev/null
 	tmpfile=$(mktemp --suffix=-mirrorlist)
 
 	case "$MIRRORLIST" in
