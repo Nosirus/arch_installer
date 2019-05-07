@@ -339,11 +339,21 @@ install_base() { # {{{
 	download_package 'base base-devel'
 	pacstrap -c "$MOUNTPOINT" base base-devel
 
-	download_package 'dialog wpa_supplicant'
-	pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
+	#download_package 'dialog wpa_supplicant'
+	#pacstrap -c "$MOUNTPOINT" dialog wpa_supplicant # if you use wifi in the live system, you will also need this
 
-	print_progress 'setup network for the new system'
-	arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
+	#print_progress 'setup network for the new system'
+	#arch_chroot "systemctl enable dhcpcd@$(wired_device).service"
+	
+	WIRELESS_DEV=`ip link | grep wl | awk '{print $2}'| sed 's/://' | sed '1!d'`
+	if [[ -n $WIRELESS_DEV ]]; then
+		pacstrap ${MOUNTPOINT} iw wireless_tools wpa_supplicant dialog
+	else
+		WIRED_DEV=`ip link | grep "ens\|eno\|enp" | awk '{print $2}'| sed 's/://' | sed '1!d'`
+		if [[ -n $WIRED_DEV ]]; then
+			arch_chroot "systemctl enable dhcpcd@${WIRED_DEV}.service"
+		fi
+	fi
 
 	enter_to_continue
 }
